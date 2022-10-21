@@ -1,0 +1,56 @@
+#         Multiplexer            Parameter:           (c) IERT  12.10.1995
+#                                k .. Betrag des Schwellwerts [1]
+#  u1 ---*\
+#          ^\________ y          y = u1 : abs(u3) > k
+#  u2 ---* |                     y = u2 : abs(u3) <= k
+#          |
+#  u3 -----+ |u3| > k            Hinweis:
+#                                Der links- und rechtsseitige Grenzwert
+#                                der Amplitude zum Schaltzeitpunkt wird
+#                                aufgezeichnet.
+#
+BLOCK AMPlex;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Multiplexer"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] Signal 1 Eingang";
+   u2 "[1] Signal 2 Eingang";
+   u3 "[1] Enscheidungssignal Eingang";
+OUTPUT
+   y "[1] Multiplex Ausgang";
+PARAMETER
+   k = 0.0 "[1] Schwellwertbetrag";
+VAR
+   mstate DISCRETE "zweiwertiger Zustand";
+SIM
+   SWITCH mstate
+   CASE 0:
+      ONRISE ABS(u3) > k DO set_to_1;
+      y = u1 <- set_to_1(u1, u2, u3);
+   CASE 1:
+      ONRISE ABS(u3) <= k DO set_to_0;
+      y = u2 <- set_to_0(u1, u2, u3);
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE set_to_1;
+   mstate = 1;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE set_to_0;
+   mstate = 0;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF k < 0 THEN
+      EXIT "k >= 0 required";
+   ENDIF
+   mstate = 0;
+ENDINIT
+ENDBLOCK AMPlex;

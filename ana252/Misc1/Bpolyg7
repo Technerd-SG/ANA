@@ -1,0 +1,122 @@
+#  Polygonzug mit 7 Stuetz-      Parameter:           (c) IERT  01.04.1997
+#        punkten                 u1 .. u - Knickpunkt 1 [1]
+#                                y1 .. y - Knickpunkt 1 [1]
+#  Kennlinie                     u2 .. u - Knickpunkt 2 [1]
+#                                y2 .. y - Knickpunkt 2 [1]
+#  y ^                           u3 .. u - Knickpunkt 3 [1]
+#    |                           y3 .. y - Knickpunkt 3 [1]
+#    |      y3                   u4 .. u - Knickpunkt 4 [1]
+#    |  y2 .      . y6           y4 .. y - Knickpunkt 4 [1]
+#    |                . y7       u5 .. u - Knickpunkt 5 [1]
+#   y1 .                         y5 .. y - Knickpunkt 5 [1]
+#   -+---------  ---------->     u6 .. u - Knickpunkt 6 [1]
+#    0 u1  u2      u6 u7 u       y6 .. y - Knickpunkt 6 [1]
+#                                u7 .. u - Knickpunkt 7 [1]
+#                                y7 .. y - Knickpunkt 7 [1]
+#
+#                                Zwischen den Stuetzpunkten (un/yn) wird linear
+#                                interpoliert. Fuer u > u7 wird die Gerade
+#                                (u6/y6) - (u7/y7), fuer u < u1 die Gerade
+#                                (u1/y1) - (u2/y2) weiterverwendet.
+#
+BLOCK BPOLYG7;
+$ BLOCKDIM -1 -1 7 17
+$ TEXT "Polygon 7"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Polygon Eingang";
+OUTPUT
+   y "[1] Polygon Ausgang";
+PARAMETER
+   u1 = -2.0 "[1]  u - Knickpunkt 1 ";
+   y1 =  2.0 "[1]  y - Knickpunkt 1 ";
+   u2 = -1.0 "[1]  u - Knickpunkt 2 ";
+   y2 =  1.0 "[1]  y - Knickpunkt 2 ";
+   u3 =  0.0 "[1]  u - Knickpunkt 3 ";
+   y3 =  0.0 "[1]  y - Knickpunkt 3 ";
+   u4 =  1.0 "[1]  u - Knickpunkt 4 ";
+   y4 =  1.0 "[1]  y - Knickpunkt 4 ";
+   u5 =  2.0 "[1]  u - Knickpunkt 5 ";
+   y5 =  2.0 "[1]  y - Knickpunkt 5 ";
+   u6 =  3.0 "[1]  u - Knickpunkt 6 ";
+   y6 =  3.0 "[1]  y - Knickpunkt 6 ";
+   u7 =  4.0 "[1]  u - Knickpunkt 7 ";
+   y7 =  4.0 "[1]  y - Knickpunkt 7 ";
+VAR
+   bstate   DISCRETE "Zustand";
+SIM
+   SWITCH bstate
+   CASE 0:  # u zwischen -unendl. und u2
+      ONRISE u >  u2 DO
+         PROCEDURE set_to_u23;
+            bstate = 1;
+            STORE;
+         ENDPROCEDURE
+      y = y1+(u-u1)*((y2-y1)/(u2-u1));
+   CASE 1:  # u zwischen u2 und u3
+      ONRISE u <= u2 DO
+         PROCEDURE;
+            bstate = 0;
+            STORE;
+         ENDPROCEDURE
+      ONRISE u >  u3 DO
+         PROCEDURE set_to_u34;
+            bstate = 2;
+            STORE;
+         ENDPROCEDURE
+      y = y2+(u-u2)*((y3-y2)/(u3-u2));
+   CASE 2:  # u zwischen u3 und u4
+      ONRISE u <= u3 DO set_to_u23;
+      ONRISE u >  u4 DO
+         PROCEDURE set_to_u45;
+            bstate = 3;
+            STORE;
+         ENDPROCEDURE
+      y = y3+(u-u3)*((y4-y3)/(u4-u3));
+   CASE 3:  # u zwischen u4 und u5
+      ONRISE u <= u4 DO set_to_u34;
+      ONRISE u >  u5 DO
+         PROCEDURE set_to_u56;
+            bstate = 4;
+            STORE;
+         ENDPROCEDURE
+      y = y4+(u-u4)*((y5-y4)/(u5-u4));
+   CASE 4:  # u zwischen u5 und u6
+      ONRISE u <= u5 DO set_to_u45;
+      ONRISE u >  u6 DO
+         PROCEDURE;
+            bstate = 5;
+            STORE;
+         ENDPROCEDURE
+      y = y5+(u-u5)*((y6-y5)/(u6-u5));
+   CASE 5:  # u zwischen u6 und + unendl.
+      ONRISE u <  u6 DO set_to_u56;
+      y = y6+(u-u6)*((y7-y6)/(u7-u6));
+   ENDSWITCH
+ENDSIM
+
+INIT
+   IF u2 <= u1 THEN
+      EXIT "u2 darf nicht kleiner oder gleich u1 sein!";
+   ENDIF
+   IF u3 <= u2 THEN
+      EXIT "u3 darf nicht kleiner oder gleich u2 sein!";
+   ENDIF
+   IF u4 <= u3 THEN
+      EXIT "u4 darf nicht kleiner oder gleich u3 sein!";
+   ENDIF
+   IF u5 <= u4 THEN
+      EXIT "u5 darf nicht kleiner oder gleich u4 sein!";
+   ENDIF
+   IF u6 <= u5 THEN
+      EXIT "u6 darf nicht kleiner oder gleich u5 sein!";
+   ENDIF
+   IF u7 <= u6 THEN
+      EXIT "u7 darf nicht kleiner oder gleich u6 sein!";
+   ENDIF
+   bstate = 0;
+ENDINIT
+ENDBLOCK BPOLYG7;

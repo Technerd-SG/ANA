@@ -1,0 +1,67 @@
+#  Begrenzer                     Parameter:           (c) IERT  26.11.1997
+#                                k1 .. kleinste Amplitude [1]
+#                                k2 .. groesste Amplitude [1]
+#              ^
+#            y |     --- k2      Hinweis:
+#              |    /            An Zeitpunkten wo u exakt den Wert
+#              |  /              k1 oder k2 erreicht wird ein Stuetzpunkt am
+#              |/                AnaOszi aufgezeichnet.
+#     ---------+---------->
+#            / |           u
+#          /   |
+#        /     |
+#  k1 ---
+#
+BLOCK ABgrenz;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Begrenzer"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Begrenzer Eingang";
+OUTPUT
+   y "[1] Begrenzer Ausgang";
+PARAMETER
+   k1 = -1.0 "[1] kleinste Amplitude";
+   k2 =  1.0 "[1] groesste Amplitude";
+VAR
+   bstate   DISCRETE "dreiwertiger Zustand";
+SIM
+   SWITCH bstate
+   CASE 0:
+      ONRISE u > k2 DO set_to_max;
+      ONRISE u < k1 DO set_to_min;
+      y = u;
+   CASE 1:
+      ONRISE u <= k2 DO set_to_norm;
+      y = k2;
+   CASE 2:
+      ONRISE u >= k1 DO set_to_norm;
+      y = k1;
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE set_to_max;
+   bstate = 1;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE set_to_min;
+   bstate = 2;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE set_to_norm;
+   bstate = 0;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   IF k2 < k1 THEN
+      EXIT "k2 darf nicht kleiner als k1 sein!";
+   ENDIF
+   bstate = 0;
+ENDINIT
+ENDBLOCK ABgrenz;

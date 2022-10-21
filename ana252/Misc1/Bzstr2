@@ -1,0 +1,57 @@
+#  Zustandsraumdarstellung       Parameter:           (c) IERT  30.03.1997
+#     System 2. Ordnung          A11 .. System-Matrix A [1]
+#                                A12 .. System-Matrix A [1]
+#      x .= Ax + Bu              A21 .. System-Matrix A [1]
+#      y  = Cx + Du              A22 .. System-Matrix A [1]
+#                                B1  .. Eingangs-Matrix B [1]
+#  /x1\   /A11 A12\/x1\   /B1\   B2  .. Eingangs-Matrix B [1]
+#  \x2/.= \A21 A22/\x2/ + \B3/u  C1  .. Ausgangs-Matrix C [1]
+#                                C2  .. Ausgangs-Matrix C [1]
+#                  /x1\          D   .. Durchgangs-Matrix D [1]
+#   y   = < C1  C2>\x2/ +  D  u  x1  .. AB Zustand 1 [1]
+#                                x2  .. AB Zustand 2 [1]
+#  x1 .= A11 x1 +A12 x2 +B1 u
+#  x2 .= A21 x1 +A22 x2 +B2 u
+#  y   =  C1 x1 + C2 x2 + D u
+#
+BLOCK BZSTR2;
+$ BLOCKDIM -1 -1 6 14
+$ TEXT "ZR 2.0"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+   ax1 "[1] Zustand";
+   ax2 "[1] Zustand";
+PARAMETER
+   A11 = 0 "[1] System-Matrix A";
+   A12 = 1 "[1] System-Matrix A";
+   A21 = -1 "[1] System-Matrix A";
+   A22 = -2 "[1] System-Matrix A";
+   B1 = 0 "[1] Eingangs-Matrix B";
+   B2 = 1 "[1] Eingangs-Matrix B";
+   C1 = 1 "[1] Ausgangs-Matrix C";
+   C2 = 0 "[1] Ausgangs-Matrix C";
+   D = 0 "[1] Durchgangs-Matrix D";
+   x1 = 0 "[1] AB Zustand 1";
+   x2 = 0 "[1] AB Zustand 2";
+STATE
+   X1  "[1] X";
+   X2  "[1] X";
+SIM
+   X1 .= A11*X1 + A12*X2 + B1*u;
+   X2 .= A21*X1 + A22*X2 + B2*u;
+   y   =  C1*X1 +  C2*X2 +  D*u;
+   ax1 = X1;
+   ax2 = X2;
+ENDSIM
+
+INIT
+   X1 = x1;
+   X2 = x2;
+ENDINIT
+ENDBLOCK BZSTR2;

@@ -1,0 +1,47 @@
+#    Abtasten und Halten         Parameter:           (c) IERT  07.10.1995
+#     Sample and Hold            T  .. Abtastzeit [s]
+#
+#          | T
+#          v                       math.Taster Halteglied
+#      +--------+      _                 /  *  +--------+     _
+#   u  | ADC  / |  y = u          u    /   u   |        | y = u
+#   ---+   /    +-------         ----o    o----+  Gh0   +------
+#      |/  DAC  |                      T       |        |                  -sT
+#      +--------+                              +--------+             1 - e
+#   Geraetetechische                    mathematisches      mit Gh0 = -------
+#       Schaltung                       Blockschaltbild                 s
+#
+#                                Hinweis:
+#                                Der links- und rechtsseitige Grenzwert
+#                                der Amplitude wird aufgezeichnet.
+#
+BLOCK ASundH;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Sample&Hold"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] S&H Eingang";
+OUTPUT
+   y "[1] S&H Ausgang";
+PARAMETER
+   T = 1.0 "[s] Abtastzeit";
+VAR
+   y0 DISCRETE;
+SIM
+   y = y0 <- sample(u);
+ENDSIM
+
+PROCEDURE sample;
+   y0 = u;
+   SCHEDULE sample AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   y0 = 0;
+   SCHEDULE sample AT NOW;
+ENDINIT
+ENDBLOCK ASundH;

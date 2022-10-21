@@ -1,0 +1,25 @@
+#        Multiplizierer          Parameter:           (c) IERT  07.10.1995
+#                                k .. Verstaerkung [1]
+#       y = k u1 u2 u3
+#                                Hinweis:
+#                                Ein unbenutzer Eingang kann mit dem
+#                                Block Konstante (Misc_1) auf 1 gesetzt werden.
+BLOCK AMult3;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Multiplizierer"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] Multiplizierereingang";
+   u2 "[1] Multiplizierereingang";
+   u3 "[1] Multiplizierereingang";
+OUTPUT
+   y  "[1] Multipliziererausgang";
+PARAMETER
+   k = 1.0 "[1] Verstaerkung";
+SIM
+   y = k*u1*u2*u3;
+ENDSIM
+ENDBLOCK AMult3;

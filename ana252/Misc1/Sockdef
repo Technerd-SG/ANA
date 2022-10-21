@@ -1,0 +1,25 @@
+#   Definition fuer              Parameter:           (c) IERT  19.10.1996
+#   SOCKET-Signale               Name .. Signalname
+#
+#   Eine SOCKET-Referenz kann mit einer SOCKET-Definition durch
+#   Angabe des identischen Signalnamens verbunden werden.
+#   Auf eine SOCKET-Definition duerfen beliebig viele SOCKET-Referenzen
+#   verweisen.
+#   Eine SOCKET-Referenz darf nicht ohne zugehoerige SOCKET-Definition
+#   auftreten.
+#
+BLOCK SockDef;
+$ BLOCKDIM -1 -1 7 5
+$ TEXT "SOCKET-Definiton"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+PARAMETER
+   Name SOCKET = "Signal 1" "Namen des Signals";
+SIM
+   Name = u;
+ENDSIM
+ENDBLOCK SockDef;

@@ -1,0 +1,36 @@
+$[Testsignale]
+ASPRUNG,Sprungfunktion
+ARAMPE,Rampenfunktion
+ASINUS,Sinusfunktion
+
+$[Lineare Systeme]
+AADD2,Addierer mit 2 Eingaengen
+AADD3,Addierer mit 3 Eingaengen
+AINTEG,Integrator
+APT1,PT1 - Verzoegerung 1. Ordnung
+APT2,PT2 - Verzoegerung 2. Ordnung
+ADIFF,DT1 - realer Differenzierer
+ATOTZEIT,Totzeit
+
+$[Nichtlineare Systeme]
+ABREAK,Break - zum Aufbrechen von algebraischen Schleifen
+AMULT3,Multiplizierer
+ADIVIDE,Dividierer
+ABGRENZ,Begrenzer
+ALOSE,Lose
+ATOTZONE,Totzone
+AMPLEX,Multiplexer
+
+$[Regler]
+APREG,P-Regler
+APID,PIDT1-Regler
+AZPUNKT,2-Punkt Regler
+ADPUNKT,3-Punkt Regler
+
+$[Zeitdiskrete Systeme]
+ADIFFG,G(1/z) - Differenzengleichung
+ASUNDH,Sample&Hold (math. Taster samt Abtasthalteglied)
+AMATHTAS,mathematischer Taster (Dirac-Taster)
+
+$[STEUERUNG-CONTROL]
+ACONTROL,Simulationssteuerung linear

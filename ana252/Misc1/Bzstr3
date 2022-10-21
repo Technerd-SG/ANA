@@ -1,0 +1,75 @@
+#  Zustandsraumdarstellung       Parameter:           (c) IERT  30.03.1997
+#     System 3. Ordnung                   A11 .. System-Matrix A [1]
+#                                         A12 .. System-Matrix A [1]
+#      x .= Ax + Bu                       A13 .. System-Matrix A [1]
+#      y  = Cx + Du                       A21 .. System-Matrix A [1]
+#                                         A22 .. System-Matrix A [1]
+#  /x1\    /A11 A12 A13\ /x1\   /B1\      A23 .. System-Matrix A [1]
+#  |x2| .= |A21 A22 A23| |x2| + |B2| u    A31 .. System-Matrix A [1]
+#  \x3/    \A31 A32 A33/ \x3/   \B3/      A32 .. System-Matrix A [1]
+#                                         A33 .. System-Matrix A [1]
+#                        /x1\             B1  .. Eingangs-Matrix B [1]
+#   y    = < C1  C2  C3> |x2| +   D  u    B2  .. Eingangs-Matrix B [1]
+#                        \x3/             B3  .. Eingangs-Matrix B [1]
+#                                         C1  .. Ausgangs-Matrix C [1]
+#                                         C2  .. Ausgangs-Matrix C [1]
+#  x1 .= A11 x1 +A12 x2 +A13 x3 +B1 u     C3  .. Ausgangs-Matrix C [1]
+#  x2 .= A21 x1 +A22 x2 +A23 x3 +B2 u     D   .. Durchgangs-Matrix D [1]
+#  x3 .= A31 x1 +A32 x2 +A33 x3 +B3 u     x1  .. AB Zustand 1 [1]
+#  y   =  C1 x1 + C2 x2 + C3 x3 + D u     x2  .. AB Zustand 2 [1]
+#                                         x3  .. AB Zustand 3 [1]
+#
+BLOCK BZSTR3;
+$ BLOCKDIM -1 -1 6 25
+$ TEXT "ZR 3.0"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+   ax1 "[1] Zustand";
+   ax2 "[1] Zustand";
+   ax3 "[1] Zustand";
+PARAMETER
+   A11 = 0 "[1] System-Matrix A";
+   A12 = 1 "[1] System-Matrix A";
+   A13 = 0 "[1] System-Matrix A";
+   A21 = 0 "[1] System-Matrix A";
+   A22 = 0 "[1] System-Matrix A";
+   A23 = 1 "[1] System-Matrix A";
+   A31 = -1 "[1] System-Matrix A";
+   A32 = -3 "[1] System-Matrix A";
+   A33 = -3 "[1] System-Matrix A";
+   B1 = 0 "[1] Eingangs-Matrix B";
+   B2 = 0 "[1] Eingangs-Matrix B";
+   B3 = 1 "[1] Eingangs-Matrix B";
+   C1 = 1 "[1] Ausgangs-Matrix C";
+   C2 = 0 "[1] Ausgangs-Matrix C";
+   C3 = 0 "[1] Ausgangs-Matrix C";
+   D = 0 "[1] Durchgangs-Matrix D";
+   x1 = 0 "[1] AB Zustand 1";
+   x2 = 0 "[1] AB Zustand 2";
+   x3 = 0 "[1] AB Zustand 3";
+STATE
+   X1  "[1] X";
+   X2  "[1] X";
+   X3  "[1] X";
+SIM
+   X1 .= A11*X1 + A12*X2 + A13*X3 + B1*u;
+   X2 .= A21*X1 + A22*X2 + A23*X3 + B2*u;
+   X3 .= A31*X1 + A32*X2 + A33*X3 + B3*u;
+   y  =   C1*X1 +  C2*X2 +  C3*X3 +  D*u;
+   ax1 = X1;
+   ax2 = X2;
+   ax3 = X3;
+ENDSIM
+
+INIT
+   X1 = x1;
+   X2 = x2;
+   X3 = x3;
+ENDINIT
+ENDBLOCK BZSTR3;

@@ -1,0 +1,81 @@
+#  Anstiegsbegrenzer             Parameter:           (c) IERT  15.12.1995
+#                                kmax .. groesste Anstieg [1/s]
+#  Der Ausgang y ist das         kmin .. kleinster Anstieg [1/s]
+#  anstiegsbegrenzte Eingangs-   k    .. Nachfuehrregelungsverstaerkung [1]
+#  signal u. Der Anstieg kann    AB   .. Anfangsbedingung y(t = 0)
+#  mit einem Maximalwert kmax
+#  (typisch > 0) und einem       Hinweis:
+#  Minimalwert kmin (typisch     Es wird folgende Schaltung realisiert
+#  -kmax) definiert werden.
+#                                             +------+    +-----+
+#  Mit k kann die Phasenver-     u     +---+  |kmax - \   |  1  |   y
+#  schiebung der Schaltung       -->O->| k |->|.../... +->| --- |-+--
+#  eingestellt werden. Ein         -^  +---+  | - kmin/   |  s  | |
+#  sehr grosses k fuehrt zu         |         +------+    +-----+ |
+#  einem steifen DGL-System         +-----------------------------+
+#  und damit zu hohem Rechen-
+#  aufwand fuer Runge-Kutta-     Als Ableitung des Ausgangsignals y ist
+#  Verfahren (DASSL verwenden).  das interne Signal yp markierbar.
+#
+BLOCK Anbeg;
+$ BLOCKDIM -1 -1 9 6
+$ TEXT "Anstiegsbegrenzer"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   kmax =  1.0  "[1/s] groesster Anstieg";
+   kmin = -kmax "[1/s] kleinster Anstieg";
+   AB = 0.0     "[1] Anfangsbedingung y(0)";
+   k = 1e3      "[1] Tracking-Verstaerkung";
+STATE
+   x;
+VAR
+   bstate   DISCRETE "dreiwertiger Zustand";
+   bin; yp;
+SIM
+   bin = k*(u - x);
+   SWITCH bstate
+   CASE 0:
+      ONRISE bin > kmax DO set_to_max;
+      ONRISE bin < kmin DO set_to_min;
+      yp = bin;
+   CASE 1:
+      ONRISE bin <= kmax DO set_to_norm;
+      yp = kmax;
+   CASE 2:
+      ONRISE bin >= kmin DO set_to_norm;
+      yp = kmin;
+   ENDSWITCH
+   x .= yp;
+   y = x;
+ENDSIM
+
+PROCEDURE set_to_max;
+   bstate = 1;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE set_to_min;
+   bstate = 2;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE set_to_norm;
+   bstate = 0;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   IF kmax < kmin THEN
+      EXIT "kmax darf nicht kleiner als kmin sein!";
+   ENDIF
+   x = AB;
+   bstate = 0;
+ENDINIT
+ENDBLOCK Anbeg;

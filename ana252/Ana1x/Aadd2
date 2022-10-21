@@ -1,0 +1,25 @@
+#   Addierer/Subtrahierer        Parameter:           (c) IERT  27.09.1995
+#                                k1 .. Verstaerkung fuer u1 [1]
+#                                k2 .. Verstaerkung fuer u2 [1]
+#    y = k1*u1 + k2*u2
+#
+#
+BLOCK AAdd2;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Addierer"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] Addierereingang";
+   u2 "[1] Addierereingang";
+OUTPUT
+   y  "[1] Addiererausgang";
+PARAMETER
+   k1 = 1 "[1] Verstaerkung";
+   k2 = -1 "[1] Verstaerkung";
+SIM
+   y = k1*u1 + k2*u2;
+ENDSIM
+ENDBLOCK AAdd2;

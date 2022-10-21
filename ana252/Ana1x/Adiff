@@ -1,0 +1,54 @@
+#    Differenzierer (Ersatz)     Parameter:           (c) IERT  10.10.1995
+#           DT1                  Td .. Zeitkonstante [s]
+#                                N  .. Verhaeltnis Td/T1 [1]
+#   Sprungantwort u(t)=1(t)
+#                                       y(s)      s Td         s Td
+#   y ^                          G(s) = ---- = ---------- = -----------
+#   N |.                                u(s)    1 + s T1           Td
+#     |..                                                    1 + s ---
+#     |. .                                                          N
+#     |.  .                      Hinweis:
+#     |.    .                    Mit Hilfe der parasitaeren Zeitkonstante T1
+#    -+--------------------->    wird der Anfangswert der Sprungantwort
+#     0                   t      bestimmt. Fuer N = Td/T1 >> 0 naehert sich
+#                                das Verhalten einem idealen Differenzierer.
+#                                ACHTUNG - Eine Kettenschaltung von DT1 und
+#                                einem I-Element wird auch fuer N >> 0
+#                                nicht sprungfaehig (inf wird NIE erreicht).
+#
+BLOCK ADiff;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "DT1"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] DT1 Eingang";
+OUTPUT
+   y "[1] DT1 Ausgang";
+PARAMETER
+   Td = 1.0 "[s] sTd / (1 + sTd/N)";
+   N = 100.0 "[1] Td/T1";
+VAR
+   b1 DISCRETE;
+   a1 DISCRETE;
+STATE
+   X  "[1] Verzoegerung";
+SIM
+   X .= a1*X + u;
+   y = N*u - b1*X;
+ENDSIM
+
+INIT
+   IF Td == 0 THEN
+      b1 = 0;
+      a1 = 0;
+      N = 0;
+   ENDIF
+   IF Td != 0 THEN
+      b1 = SQR(N)/Td;
+      a1 = -N/Td;
+   ENDIF
+ENDINIT
+ENDBLOCK ADiff;

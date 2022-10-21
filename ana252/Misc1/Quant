@@ -1,0 +1,62 @@
+#    Abtasten und Halten         Parameter:           (c) IERT  16.12.1996
+#     mit Quantisierung          T     .. Abtastzeit [s]
+#     Sample and Hold            Range .. Wertebereich [1]
+#                                S     .. Anzahl der Amplitudenstufen (2^N) [1]
+#
+#          | T
+#          v                       math.Taster Halteglied
+#      +--------+      _                 /  *  +--------+     _
+#   u  | ADC  / |  y = u          u    /   u   |        | y = u
+#   ---+   /    +-------         ----o    o----+  Gh0   +------
+#      |/  DAC  |                      T       |        |                  -sT
+#      +--------+                              +--------+             1 - e
+#   Geraetetechische                    mathematisches      mit Gh0 = -------
+#       Schaltung                       Blockschaltbild                 s
+#
+#   Hinweis:
+#   Der Wandler wird bipolar modelliert. Die Ausgangsamplitude liegt
+#   daher zwischen -Range und Range*(S/2-1)/(S/2). Die Wandler
+#   haben eine Aufloesung von N = log2(S) Bit.
+#   Bei einem 12 Bit Wandler (N = 12, S = 4096) mit Range = 10 daher zwischen
+#   -10 und 10*2047/2048.
+#
+BLOCK Quant;
+$ BLOCKDIM -1 -1 7 5
+$ TEXT "S&H+Quant."
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] S&H+Quant. Eingang";
+OUTPUT
+   y "[1] S&H+Quant. Ausgang";
+PARAMETER
+   T = 1.0 "[s] Abtastzeit";
+   Range = 10 "[1] Wertebereich";
+   S = 4096 "[1] Amplitudenstufen (2^N)";
+VAR
+   y0 DISCRETE; Sby2 DISCRETE; Hlimit DISCRETE;
+SIM
+   y = y0 <- sample(u);
+ENDSIM
+
+PROCEDURE sample;
+   y0 = ROUND(u/Range*Sby2)/Sby2*Range;
+   IF u >= Hlimit THEN
+      y0 = Hlimit;
+   ENDIF
+   IF u < -Range THEN
+      y0 = -Range;
+   ENDIF
+   SCHEDULE sample AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   Sby2 = S/2;
+   Hlimit = Range*(Sby2-1)/Sby2;
+   y0 = 0;
+   SCHEDULE sample AT NOW;
+ENDINIT
+ENDBLOCK Quant;

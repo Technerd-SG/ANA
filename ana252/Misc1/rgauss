@@ -1,0 +1,57 @@
+#        Anregung -              Parameter:           (c) IERT  27.03.1997
+#  Rauschen mittels gaussver-
+#  teilter Zufallszahlen im      T  .. Taktzeit [s]
+#  Intervall [-inf ..inf]        AB .. Initialisierung [1]
+#                                   AB < 0   implizite Initialisierung mit
+#            1            -x^2               systeminternen, konstanten Wert.
+#  p(x) = ---------- exp(-------)   AB == 0  Initialisierung mit
+#         SQRT(2*PI)        2                augenblicklicher Uhrzeit.
+#                                   AB > 0   Vorgabe des Initialisierungswertes
+#  d.h. Standardabweichung                   als (long)AB d.h. als ganze
+#  sigma = 1                                 positive Zahl zwischen 1 und 54773.
+#  Damit ergibt sich eine Wahr-
+#  scheinlichkeit von 68.26 %    Hinweis:
+#  eine Ausgangsamplitude im     Der links- und rechtsseitige Grenzwert
+#  Intervall [-1 .. 1] zu        der Amplitude wird aufgezeichnet.
+#  erhalten.
+#
+#  Die Signalquelle ist als
+#  Abtastsystem implementiert.
+#  Die Abtastzeit kann mit T
+#  vorgegeben werden.
+#
+BLOCK RGLEICH;
+$ BLOCKDIM -1 -1 10 6
+$ TEXT "Gaussvert. Rauschen"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   T  =  0.01 "[s] Taktzeit";
+   AB =  0    "[1] Initialisierung";
+VAR
+   yd DISCRETE;
+SIM
+   y = yd;
+ENDSIM
+
+PROCEDURE Noise;
+   yd = RNDGAUSS();
+   SCHEDULE Noise AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   yd = 0;
+   IF AB > 54773 THEN
+      EXIT "AB darf nicht groesser als 54773 sein!";
+   ENDIF;
+   IF AB >= 0 THEN // else use implicit initialization
+      RANDOMIZE(AB);
+   ENDIF;
+   SCHEDULE Noise AT NOW;
+ENDINIT
+ENDBLOCK RGLEICH;

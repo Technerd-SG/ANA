@@ -1,0 +1,103 @@
+#  Dreipunktregler               Parameter:           (c) IERT  13.10.1995
+#  mit/ohne Hysterese            k  .. Stellgroesse  [1]
+#                                a1 .. Einschaltschwelle [1]
+#             y ^                a2 .. Ausschaltschwelle [1]
+#               |                AB .. Anfangsbedingung des Relais [1]
+#               |  +--+---- k    Tr .. Blockierzeit des Reglers [s]
+#               |  |  |
+#       -a1 -a2 |  |  |          Hinweis:
+#   ------+--+--+--+--+------>   Die Anfangslage des Ausgangs y ist fuer
+#         |  |  |  a2 a1    u    a2 < u < a1 und -a1 < u < -a2 unbestimmt
+#         |  |  |                und kann durch k * sign(AB) vorgegeben werden.
+#    -k --+--+  |                Mit Hilfe der Blockierzeit Tr wird die
+#               |                Schaltfrequenz auf einem endlichen Wert
+#               |                begrenzt.
+#
+BLOCK ADPunkt;
+$ BLOCKDIM -1 -1 6 7
+$ TEXT "3-Pkt.-Reg."
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Dreipunktregler Eingang";
+OUTPUT
+   y "[1] Dreipunktregler Ausgang";
+PARAMETER
+   k  = 1.0 "[1] Stellgroesse";
+   a1 = 0.5 "[1] Einschaltschwelle";
+   a2 = 0.5 "[1] Ausschaltschwelle";
+   AB = 0   "[1] Anfangsbedingung";
+   Tr = 1e-3 "[s] Blockierzeit des Reglers";
+VAR
+   a         DISCRETE "Reglerausgang";
+   rstate    DISCRETE "Dreiwertiges Stellrelais";
+   waitstate DISCRETE "Wartezustand";
+SIM
+   SWITCH waitstate
+   CASE 0:
+      SWITCH rstate
+      CASE 0:
+         ONRISE u > a1 DO set_to_k1;
+         ONRISE u < -a1 DO set_to_k2;
+      CASE 1:
+         ONRISE u <= a2 DO set_to_0;
+      CASE 2:
+         ONRISE u >= -a2 DO set_to_0;
+      DEFAULT:
+         EXIT "Unbekannter Zustand fuer rstate";
+      ENDSWITCH
+   CASE 1:
+      // Nothing
+   DEFAULT:
+      EXIT "Unbekannter Zustand fuer waitstate";
+   ENDSWITCH
+   y = a <- set_to_k1(u) <- set_to_k2(u) <- set_to_0(u);
+ENDSIM
+
+PROCEDURE set_to_k1;
+   a = k;
+   rstate = 1;
+   waitstate = 1;
+   SCHEDULE wake3punkt AT NOW+Tr;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE set_to_k2;
+   a = -k;
+   rstate = 2;
+   waitstate = 1;
+   SCHEDULE wake3punkt AT NOW+Tr;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE set_to_0;
+   a = 0;
+   rstate = 0;
+   waitstate = 1;
+   SCHEDULE wake3punkt AT NOW+Tr;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE wake3punkt;
+   waitstate = 0;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   waitstate = 0;
+   IF AB > 0 THEN
+      rstate = 1;
+      a = k;
+   ENDIF
+   IF AB < 0 THEN
+      rstate = 2;
+      a = -k;
+   ENDIF
+   IF AB == 0 THEN
+      rstate = 0;
+      a = 0;
+   ENDIF
+ENDINIT
+ENDBLOCK ADPunkt;

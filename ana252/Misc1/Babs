@@ -1,0 +1,26 @@
+#     Betragsbildner             Parameter:           (c) IERT  30.04.1997
+#                                k  .. Faktor [1]
+#
+#    y(t) = k |u(t)|             Hinweis:
+#                                Der Nulldurchgang von u(t) wird als
+#                                Stuetzpunkt der Loesung aufgezeichnet.
+#
+BLOCK BABS;
+$ BLOCKDIM -1 -1 3 3
+$ TEXT "Abs"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k = 1 "[1] Faktor";
+SIM
+   y = k*ABS(u);
+   ONRISE u >= 0 DO STORE ALL;   // step size control
+   ONRISE u <= 0 DO STORE ALL;
+ENDSIM
+ENDBLOCK BABS;

@@ -1,0 +1,53 @@
+#        Anregung -              Parameter:           (c) IERT  27.03.1997
+#  Rauschen mittels exponen-
+#  tiell verteilter Zufalls-     T  .. Taktzeit [s]
+#  zahlen im Intervall [0..inf]  AB .. Initialisierung [1]
+#                                   AB < 0   implizite Initialisierung mit
+#  p(x) = exp(-x) : x >= 0                   systeminternen, konstanten Wert.
+#  p(x) = 0       : x < 0           AB == 0  Initialisierung mit
+#                                            augenblicklicher Uhrzeit.
+#  Damit ergibt sich eine Wahr-     AB > 0   Vorgabe des Initialisierungswertes
+#  scheinlichkeit von 63.21 %                als (long)AB d.h. als ganze
+#  eine Ausgangsamplitude                    positive Zahl zwischen 1 und 54773.
+#  kleiner 1 zu erhalten.
+#                                Hinweis:
+#  Die Signalquelle ist als      Der links- und rechtsseitige Grenzwert
+#  Abtastsystem implementiert.   der Amplitude wird aufgezeichnet.
+#  Die Abtastzeit kann mit T
+#  vorgegeben werden.
+#
+BLOCK REXP;
+$ BLOCKDIM -1 -1 10 6
+$ TEXT "Exp.verteilt. Rauschen"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   T  =  0.01 "[s] Taktzeit";
+   AB =  0    "[1] Initialisierung";
+VAR
+   yd DISCRETE;
+SIM
+   y = yd;
+ENDSIM
+
+PROCEDURE Noise;
+   yd = RNDEXP();
+   SCHEDULE Noise AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   yd = 0;
+   IF AB > 54773 THEN
+      EXIT "AB darf nicht groesser als 54773 sein!";
+   ENDIF;
+   IF AB >= 0 THEN // else use implicit initialization
+      RANDOMIZE(AB);
+   ENDIF;
+   SCHEDULE Noise AT NOW;
+ENDINIT
+ENDBLOCK REXP;

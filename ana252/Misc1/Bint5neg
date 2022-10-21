@@ -1,0 +1,49 @@
+#        Analogrechner           Parameter:           (c) IERT  27.03.1997
+#     Aktiver Verstaerker        k1 .. Verstaerkung [1]
+#     mit fuenf Eingaenge        k2 .. Verstaerkung [1]
+#         _                      k3 .. Verstaerkung [1]
+#  u1 ___| |\                    k4 .. Verstaerkung [1]
+#  u2 ___| |  \                  k5 .. Verstaerkung [1]
+#  u3 ___| |    \___ y           AB .. Anfangsbedingung -y(0) [1]
+#  u4 ___| |    /
+#  u5 ___| |  /                  ACHTUNG: Dieses Element invertiert!
+#        |_|/ |                        /t
+#             |                  y = - | (k1*u1+k2*u2+k3*u3+k4*u4+k5*u5) dT
+#            AB                        /0
+#                                Hinweis:
+#                                Ein ueblicher Analogrechner erlaubt fuer
+#                                k1, k2, k3, k4, k5 nur die Werte 1 oder 10.
+#
+BLOCK BINT5NEG;
+$ BLOCKDIM -1 -1 5 9
+$ TEXT "Inv. Integrator"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] Eingang";
+   u2 "[1] Eingang";
+   u3 "[1] Eingang";
+   u4 "[1] Eingang";
+   u5 "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k1 = 1   "[1] Verstaerkung u1";
+   k2 = 1   "[1] Verstaerkung u2";
+   k3 = 1   "[1] Verstaerkung u3";
+   k4 = 1   "[1] Verstaerkung u4";
+   k5 = 1   "[1] Verstaerkung u5";
+   AB = 0.0 "[1] Anfangsbedingung -y(0)";
+STATE
+   X "[1] Integrator";
+SIM
+   X .= -k1*u1 -k2*u2 -k3*u3 -k4*u4 -k5*u5;
+   y = X;
+ENDSIM
+
+INIT
+   X = -AB;
+ENDINIT
+ENDBLOCK BINT5NEG;

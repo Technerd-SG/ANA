@@ -1,0 +1,50 @@
+#  Verzoegerung 2.Ordnung        Parameter:           (c) IERT  07.10.1995
+#           PT2                  k  .. Verstaerkung [1]
+#                                D  .. Daempfungsgrad [1]
+#  Sprungantwort u(t)=1(t)       wn .. natuerliche Kreisfrequenz [rad/s]
+#
+#  y ^      ..
+#    |.. .. .. . .. .. .. k             y(s)             k
+#    |   .      . .              G(s) = ---- = --------------------
+#    |  .                               u(s)       2 D       1
+#    | .                                       1 + --- s + ---- s^2
+#    |.                                             wn     wn^2
+#   -+--------------------->
+#    0                   t       Hinweis:
+#                                z.B. wn = 2*cPI*10 fuer fn = 10 Hz
+#                                Als Ableitung des Ausgangsignals y ist
+#                                das interne Signal yp markierbar.
+#
+BLOCK APT2;
+$ BLOCKDIM -1 -1 6 5
+$ TEXT "PT2"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] PT2 Eingang";
+OUTPUT
+   y "[1] PT2 Ausgang";
+PARAMETER
+   k = 1.0 "[1] Verstaerkung";
+   D = 0.0 "[1] Daempfungsgrad";
+   wn = 2*cPI "[1/s] natuerliche Kreisfrequenz";
+STATE
+   x1 "[1] PT2";
+   x2 "[1] PT2";
+VAR
+   Mwn2 DISCRETE; MDwn2 DISCRETE; kf DISCRETE;
+   yp;   // Ableitung des Ausgangssignals
+SIM
+   x1 .=      Mwn2*x2 +kf*u;
+   x2 .= yp;
+   yp  = x1 +MDwn2*x2;
+   y   = x2;
+ENDSIM
+INIT
+   Mwn2 = -wn*wn;
+   MDwn2 = -2*D*wn;
+   kf = -k*Mwn2;
+ENDINIT
+ENDBLOCK APT2;

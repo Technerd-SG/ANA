@@ -1,0 +1,40 @@
+#      Steuerungsblock           Parameter:           (c) IERT  28.09.1995
+#   Abbruch nach fixer Zeit      te .. Simulationsdauer [s]
+#  Datenpunkte im fixen          h  .. Kommunikationsinterval [s]
+#  Kommunikationsinterval an
+#       das AnaOszi              Hinweis:
+#                                Durch schaltende Systeme oder zusaetzliche
+#                                Steuerungsbloecke entstehen mitunter
+#                                zusaetzliche Datenpunkte fuer das AnaOszi.
+BLOCK AControl;
+$ SUBTYPE CONTROL
+$ BLOCKDIM -1 -1 6 5
+$ TEXT ""
+$ TEXTALIG 1 2 0 1
+$ ICONNAME "control"
+$ ICONDIM 2 2
+$ ICONALIG 1 0 0
+OUTPUT
+   y "[1] Masse";
+PARAMETER
+   te = 10 "[s] Simulationsdauer";
+   h= 0.01 "[s] Kommunikationsinterval";
+SIM
+   y = 0;
+ENDSIM
+
+PROCEDURE terminate;
+   STORE;
+   QUIT;
+ENDPROCEDURE
+
+PROCEDURE saver;
+   SCHEDULE saver AT NOW+h;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   SCHEDULE terminate AT te;
+   SCHEDULE saver AT NOW;
+ENDINIT
+ENDBLOCK AControl;

@@ -1,0 +1,62 @@
+#  Digitaler PI-Regler           Parameter:           (c) IERT  25.08.1997
+#  mit Anti-Windupmassnahme      k     .. Verstaerkung [1]
+#                                Tn    .. Nachstellzeit [s]
+#                                T     .. Abtastzeit [s]
+#                                I0    .. AB Integrator [1]
+#                                umin  .. max. Stellgroesse [1]
+#                                umin  .. min. Stellgroesse [1]
+#
+#  u  _   +-----------------+
+#   -|k|--+  ____      ___  |    ____
+#    |_|  | |1/Tn|    |1/s| v   |  /-|  y    Wenn die Anti-Windupmassnahme
+#         +-|____|->O-|___|>O-+-|-/  |-+-    nicht eingreift gilt:
+#                  -^         | |____| |
+#                   |  ____   +-->O<---+               1+sTn         k    1
+#                   | |1/Tn|     -|          G(s) = k ------- = k + ---- ---
+#                   +-|____|------+                     sTn          Tn   s
+#
+BLOCK BDPI;
+$ BLOCKDIM -1 -1 8 8
+$ TEXT "Dig.PI ARW"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   yref "[1] PI-Regler Sollwert";
+   y    "[1] PI-Regler Istwert";
+OUTPUT
+   u "[1] PI-Regler Stellgroesse";
+PARAMETER
+   k  = 1     "[1] Verstaerkung";
+   Tn = 1     "[s] Nachstellzeit";
+   T  = 50e-3 "[s] Abtastzeit";
+   I0 = 0.0   "[1] AB Integrator";
+   umax = 10  "[1] max. Stellgroesse";
+   umin = -10 "[1] min. Stellgroesse";
+VAR
+   u0 DISCRETE; I DISCRETE; ubin DISCRETE;
+SIM
+   u = u0 <- sample(yref,y);
+ENDSIM
+
+PROCEDURE sample;
+   ubin = k*(yref-y) + I;
+   u0 = ubin;           // limiter
+   IF ubin > umax THEN
+      u0 = umax;
+   ENDIF
+   IF ubin < umin THEN
+      u0 = umin;
+   ENDIF
+   I = I + (k/Tn*(yref-y) + 1/Tn*(u0-ubin))*T;   // with ARW
+   SCHEDULE sample AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   u0 = 0; ubin = 0;
+   I = I0;
+   SCHEDULE sample AT NOW;
+ENDINIT
+ENDBLOCK BDPI;

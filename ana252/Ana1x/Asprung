@@ -1,0 +1,42 @@
+#   Anregung - Sprungfunktion    Parameter:           (c) IERT  26.09.1995
+#  y ^                           A  .. Amplitude y(t >= T)
+#    |                           T  .. Sprungzeitpunkt
+#    |        +-------- A        A0 .. Amplitude y(t < T)
+#    |        |
+#    |        |                  Hinweis:
+#    | A0 ----+                  Der links- und rechtsseitige Grenzwert
+#   -+----------------------->   der Amplitude wird aufgezeichnet.
+#    0        T            t
+#
+BLOCK ASprung;
+$ BLOCKDIM -1 -1 6 5
+$ TEXT "Sprung"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Sprungausgang";
+PARAMETER
+   A = 1 "[1] Amplitude y(t >= T)";
+   T = 0 "[s] Sprungzeitpunkt";
+   A0 = 0 "[1] Amplitude y(t < T)";
+VAR
+   a DISCRETE "Amplitude";
+SIM
+   y = a <- stepon;
+ENDSIM
+
+PROCEDURE stepon;
+   a = A;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF T < 0 THEN
+      EXIT "Schaltzeitpunkt T muss >= 0 sein";
+   ENDIF
+   SCHEDULE stepon AT T;
+   a = A0;
+ENDINIT
+ENDBLOCK ASprung;

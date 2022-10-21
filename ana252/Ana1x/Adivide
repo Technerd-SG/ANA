@@ -1,0 +1,24 @@
+#           Dividierer           Parameter:           (c) IERT  07.10.1995
+#                                k .. Verstaerkung [1]
+#                  u1
+#         y = k * ----
+#                  u2
+#
+BLOCK ADivide;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Dividierer"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] Dividenteneingang";
+   u2 "[1] Divisoreingang";
+OUTPUT
+   y  "[1] Quotientenausgang";
+PARAMETER
+   k = 1.0 "[1] Verstaerkung";
+SIM
+   y = k* u1 / u2;
+ENDSIM
+ENDBLOCK ADivide;

@@ -1,0 +1,41 @@
+#  Block zum Aufbrechen          Parameter:           (c) IERT  12.10.1995
+#  algebraischer Schleifen       AB .. Anfangsbedingung [1]
+#
+#  Der Block wirkt als Totzeit. Die Groesse dieser Totzeit ist ein Loesungs-
+#  gitterstuetzpunkt der Differentialgleichung. Damit ist dieser Wert i.A.
+#  sehr klein.
+#
+#  ACHTUNG:
+#  Das Einfuegen eines solchen Blocks zur Verhinderung einer algebraischen
+#  Schleife (gegenseitige Abhaengigkeit von Gleichungen) kann Stabilitaets-
+#  probleme bei der Simulation verursachen oder zu falschen Ergebnissen
+#  fuehren!
+#
+BLOCK ABreak;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Break"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Break Eingang";
+OUTPUT
+   y "[1] Break Ausgang";
+PARAMETER
+   AB = 0.0 "[1] Anfangsbedingung";
+VAR
+   y0 DISCRETE;
+SIM
+   y = y0 <- SCHEDULE break;
+   #   bewusst nicht  break(u)  d.h. Kausalitaetsverletzung erlaubt!
+ENDSIM
+
+PROCEDURE break;
+   y0 = u;
+ENDPROCEDURE
+
+INIT
+   y0 = AB;
+ENDINIT
+ENDBLOCK ABreak;

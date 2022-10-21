@@ -1,0 +1,68 @@
+#    Abtasten und Halten         Parameter:           (c) IERT  01.03.1997
+#     Sample and Hold            T  .. Abtastzeit [s]
+#   mit Interpolation der
+#   Huellkurve mittels eines
+#   kubischen Splines
+#   UND RETARDIERUNG DES Ausgangssignals
+#   um ZWEI ABTASTSCHRITTE (Kausalitaet)
+#
+#
+#            math.Taster       Interpolator
+#                  /  *  +--------+     +--------+          ~
+#           u    /   u   |        |     |   1    |      y = usp
+#          ----o    o----+  Ghsp  +-----+  ---   +------
+#                T       |        |     |  z^2   |
+#                        +--------+     +--------+
+#                      mathematisches      mit Ghsp
+#                      Blockschaltbild
+#
+#                                Hinweis:
+#                                Der links- und rechtsseitige Grenzwert
+#                                der Amplitude wird aufgezeichnet.
+#
+BLOCK Ghsp;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "S&H Spline"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] S&Hsp Eingang";
+OUTPUT
+   y "[1] S&Hsp Ausgang";
+PARAMETER
+   T = 1.0 "[s] Abtastzeit";
+VAR
+   x; x2; x3;
+   a DISCRETE; b DISCRETE; c DISCRETE; d DISCRETE;
+   u2 DISCRETE; u1 DISCRETE; u0 DISCRETE;
+   t0 DISCRETE;
+SIM
+   x = NOW-t0;
+   x2 = SQR(x);
+   x3 = x2*x;
+   y = a*x3 + b*x2 + c*x + d <- sample(u);
+ENDSIM
+
+PROCEDURE sample;
+   d = u1;
+   c = (u0 - u2)/(2 * T);
+   b = (2*u2 - 5*u1 + 4*u0 - u)/(2 * SQR(T));
+   a = (-u2 + 3*u1 - 3*u0 + u)/(2 * SQR(T)*T);
+   u2 = u1; u1 = u0; u0 = u;
+   t0 = NOW;
+   SCHEDULE sample AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF T <= 0 THEN
+      EXIT "T muss > 0 sein!";
+   ENDIF
+   t0 = NOW;
+   a = 0; b = 0; c = 0; d = 0;
+   u2 = 0; u1 = 0; u0 = 0;
+   SCHEDULE sample AT NOW;
+ENDINIT
+ENDBLOCK Ghsp;

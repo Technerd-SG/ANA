@@ -1,0 +1,58 @@
+#   Anregung - Impuls            Parameter:           (c) IERT  27.03.1997
+#  y ^                           a1 .. Amplitude vor Impuls [1]
+#    |        <-T1->             a2 .. Amplitude [1]
+#  a2|        +----+             a3 .. Amplitude nach Impuls [1]
+#    |        |    |             T  .. Verzoegerung [s]
+#    |        |    +--- a3       T1 .. Impulsdauer [s]
+#    | a1 ----+
+#   -+----------------------->   Hinweis:
+#    0        T            t     Der links- und rechtsseitige Grenzwert
+#                                der Amplitude wird aufgezeichnet.
+#
+BLOCK BIMPULS;
+$ BLOCKDIM -1 -1 5 7
+$ TEXT "Impuls"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   a1 = 0   "[1] Amplitude vor Impuls";
+   a2 = 1.0 "[1] Amplitude";
+   a3 = 0   "[1] Amplitude nach Impuls";
+   T =  0   "[s] Verzoegerung";
+   T1 = 1.0 "[s] Impulsdauer";
+VAR
+   state DISCRETE "dreiwertiger Zustand";
+SIM
+   SWITCH state
+   CASE 0:
+      y = a1;
+   CASE 1:
+      y = a2;
+   CASE 2:
+      y = a3;
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE max;
+   state = 1;
+   SCHEDULE minn AT NOW+T1;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE minn;
+   state = 2;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF T < 0 OR T1 <= 0 THEN
+      EXIT "T, T1 muessen > 0 sein!";
+   ENDIF
+   state = 0;
+   SCHEDULE max AT NOW+T;
+ENDINIT
+ENDBLOCK BIMPULS;

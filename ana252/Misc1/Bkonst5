@@ -1,0 +1,35 @@
+#   Anregung - 5 Konstanten      Parameter:           (c) IERT  27.03.1997
+#                                k1 .. Wert des Ausgangs y1 [1]
+#  y1 = k1                       k2 .. Wert des Ausgangs y2 [1]
+#  y2 = k2                       k3 .. Wert des Ausgangs y3 [1]
+#  y3 = k3                       k4 .. Wert des Ausgangs y4 [1]
+#  y4 = k4                       k5 .. Wert des Ausgangs y5 [1]
+#  y5 = k5
+#
+BLOCK BKONST5;
+$ BLOCKDIM -1 -1 5 7
+$ TEXT "Konstante"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+OUTPUT
+   y1 "[1] Ausgang";
+   y2 "[1] Ausgang";
+   y3 "[1] Ausgang";
+   y4 "[1] Ausgang";
+   y5 "[1] Ausgang";
+PARAMETER
+   k1 = 1 "[1] Konstante";
+   k2 = 1 "[1] Konstante";
+   k3 = 1 "[1] Konstante";
+   k4 = 1 "[1] Konstante";
+   k5 = 1 "[1] Konstante";
+SIM
+   y1 = k1;
+   y2 = k2;
+   y3 = k3;
+   y4 = k4;
+   y5 = k5;
+ENDSIM
+ENDBLOCK BKONST5;

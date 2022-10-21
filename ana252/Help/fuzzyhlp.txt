@@ -1,0 +1,310 @@
+IDH_HELP_Configuration
+Dialog für Konfigurationsauswahl:
+=================================
+
+Name: Dieser Name wird als Blockname im entsprechenden
+      ANA-Block angezeigt.
+
+And:  Die ausgewählte Methode wird als UND-Operator verwendet.
+      min ... Minimum-Operator
+
+Or:   Die ausgewählte Methode wird als OR-Operator verwendet.
+      max ... Maximum-Operator
+
+Inferenz:   max_prod ... Inferenz nach dem Max-Prod-Verfahren
+            max_min  ... Inferenz nach dem Max-Min-Verfahren
+
+Defuzzifizierung: centroid ... Schwerpunktsmethode
+                  max      ... Maximummethode
+
+IDH_HELP_Lvar
+Dialog zur Erstellung einer neuen linguistischen Variable:
+==========================================================
+
+Name: Name der linguistischen Variable
+
+Die folgenden Parameter werden mit Standardwerten initialisiert,
+und koennen dann im oberen Parameterblock des Fuzzy-Editors
+geaendert werden.
+
+xmin: Minimum des Definitionsbereiches
+
+xmax: Maximum des Definitionsbereiches
+
+Port: Eingang ... Variable ist Eingangsvariable
+      Ausgang ... Variable ist Ausgangsvariable
+
+Grid: Rasterweite fuer Maus
+
+IDH_HELP_Fset
+Dialog zur Erstellung einer neuen linguistischen Variable:
+==========================================================
+
+Name:    Name des Fuzzy-Sets
+
+Die folgenden Parameter werden mit Standardwerten initialisiert,
+und koennen dann im oberen Parameterblock des Fuzzy-Editors
+geaendert werden.
+
+Shape:   Es stehen Trapezfunktionen und Singletons zur Verfuegung.
+
+Color:   Farbe des Fuzzy-Sets
+
+a, b, c, d:    Charakteristische Parameter des Fuzzy-Sets.
+
+           bei Trapezen:
+             ________
+            /        \
+         __/          \____
+          a      b      c  d
+
+          bei Singletons:
+                |
+                |
+                a
+
+IDH_HELP_Hill
+Dialog zur Initialisierung der Eingangsvariablen mit Defaultwerten:
+===================================================================
+
+Alle Eingangsvariablen, die nicht als Kenngrößen des Regelgebirges
+ausgewählt wurden, scheinen in dieser Tabelle aus. Sie sind mit dem
+Mittelwert des Eingangsdefinitionsbereiches vorinitialisiert.
+
+
+IDH_HELP_Surface
+Dialog zur Auswahl der Parameter für das Regelgebirge:
+======================================================
+
+x-Achse:    Eingangsvariable, die in x-Richtung aufgetragen wird.
+
+y-Achse:    Eingangsvariable, die in y-Richtung aufgetragen wird.
+
+x-Grid:     Anzahl der Berechnungsintervalle in x-Richtung.
+
+y-Grid:     Anzahl der Berechnungsintervalle in y-Richtung.
+
+
+IDH_HELP_Errormessages
+Kurzübersicht der Fehlermeldungen:
+==================================
+
+Membershipfunction with that name already exists:
+
+   Der Name einer Zugehörigkeitsfunktion muß eindeutig innerhalb
+   einer Variable sein.
+
+Linguistic variable with that name already exists:
+
+   Der Name einer Variable muß eindeutig innerhalb eines Fuzzy-Systems sein.
+   Auch Ein- und Ausgänge müssen unterschiedliche Namen tragen.
+
+Fuzzy-Block is ambiguous:
+
+   Entweder haben zwei oder mehrere Zugehörigkeitsfunktionen einer Variable
+   die selben Namen, oder zwei Variable tragen den selben Namen.
+   Dieser Fehler wird beim Laden eines Fuzzy-Blocks automatisch korrigiert. Die
+   Regelbasis muß jedoch danach abgeändert werden.
+   Tritt dieser Fehler während der Simulation oder der Berechnung des Regelgebirges
+   auf, wird der Berechnungsvorgang abgebrochen.
+
+Fuzzy-Block is not complete:
+
+   Es liegt ein unvollständiger Fuzzy-Block vor!
+   Ein vollständiger Fuzzy-Block besteht aus:
+      - mindestens einer Eingangsvariable
+      - mindestens einer Ausgangsvariable
+      - mindestens einer Regel in der Regelbasis
+      - die Konfiguration wird mit Standardwerten initialisiert
+
+Can´t save ANAMDL-file because it is ambiguous:
+
+   Entweder haben zwei oder mehrere Zugehörigkeitsfunktionen einer Variable
+   die selben Namen, oder zwei Variable tragen den selben Namen.
+   Dieser Fehler wird beim Laden eines Fuzzy-Blocks automatisch korrigiert. Die
+   Regelbasis muß jedoch danach abgeändert werden.
+
+Can´t save ANAMDL-file because it is not correct:
+
+   Der Fuzzy-Block ist entweder nicht vollständig, oder es sind Regeln vorhanden,
+   in denen Variable bzw. Zugehörigkeitsfunktionen angegeben sind, die nicht
+   verfügbar sind.
+
+
+Can´t save ANAMDL-file because:
+
+   Dieser Fehler tritt auf, wenn das Öffnen des ANA-MDL-Scriptfiles fehlschlägt.
+
+Fuzzy-Compiler: File is ambiguous:
+
+   Diese Fehlermeldung tritt während der Simulation bei Fuzzy-Blöcken auf, bei
+   denen entweder zwei oder mehrere Zugehörigkeitsfunktionen einer Variable die
+   selben Namen, oder zwei oder mehrere Variablen den selben Namen tragen. Der
+   Fehler wird automatisch korrigiert.
+   Eine Aktualisierung der Regelbasis ist notwendig.
+
+Fuzzy-Compiler: File is damaged:
+
+   Der Fuzzy-Block ist entweder nicht vollständig, oder es sind Regeln vorhanden,
+   in denen Variable bzw. Zugehörigkeitsfunktionen angegeben sind, die nicht
+   verfügbar sind.
+
+Can´t calculate surface because:
+
+   Der Fuzzy-Block ist nicht vollständig, und somit das Regelgebirge nicht
+   berechenbar.
+
+Semantic error in rulebase:
+
+   Es sind Regeln vorhanden, in denen Variable angegeben sind, die nicht verfügbar sind,
+   bzw. es sind Zugehörigkeitsfunktionen angegeben, die für die entsprechende Variable
+   nicht definiert sind.
+
+Can´t calculate surface because Fuzzy-Block is ambiguous:
+
+   Entweder haben zwei oder mehrere Zugehörigkeitsfunktionen einer Variable
+   die selben Namen, oder zwei Variable tragen den selben Namen.
+   Dieser Fehler wird automatisch korrigiert. Die Regelbasis muß
+   jedoch danach abgeändert werden.
+
+Can´t calculate surface because Fuzzy-Block is not correct:
+
+   Es sind Regeln vorhanden, in denen Variable angegeben sind, die nicht verfügbar sind,
+   bzw. es sind Zugehörigkeitsfunktionen angegeben, die für die entsprechende Variable
+   nicht definiert sind.
+
+Helpfile "FileName" is not available:
+
+   Das Help-File konnte nicht geöffnet werden, weil es nicht vorhanden ist.
+
+IDH_HELP_General
+Zulaessige Syntax:
+==================
+
+   IF condition THEN action [WITH number];
+
+   condition:  (condition)
+               condition AND condition
+               condition OR condition
+               NOT condition
+               in_variable IS membershipfunction
+               in_variable == membershipfunction
+
+   action:     out_variable = membershipfunction
+               out_variable BECOMES membershipfunction
+
+Der Operator IS und == ist gleichwertig. Ebenso BECOMES und =.
+Das Schluesselwort WITH zusammen mit der nachfolgenden "number", einer Zahl
+zwischen 0 und 1 gibt den Vertrauensfaktor einer Regel an.
+
+IDH_HELP_FuzzyGeneral
+Glossar
+=======
+
+ANAfuzzy    ANA Fuzzy Wizard
+            Eingabe von Fuzzy Blöcken nit Hilfe eines graphischen
+            Editors.
+
+ANAoszi     ANA Oszilloskop
+            Darstellungsfenster der Simulationsergebnisse.
+
+ANAide      ANA Integreated Development Environment
+            Intergrierte Enwicklungsumgebung deren Herzstück der
+            Schaltungseditor ist.
+
+ANAmdl      ANA Module Description Language
+            Sprache mit der die Blöcke von ANA programmiert werden.
+
+ANAlaplace  ANA Laplace Wizard
+            Eingabemöglichkeit von G(s) und G(z).
+
+ANAident    ANA Identifikations Wizard
+            Rekursive Parameterschätzverfahren für die Identifikation
+            von Übetragungsfunktionen.
+
+IDH_HELP_AnaOsziOptionsDlg
+Anzeige von Signalen - Skalierung - Beschriftung - Druck
+========================================================
+
+Mit diesem Dialog kontrolliert man wichtige Eigenschaften des ANAoszi
+Bildes:
+   o Auswahl von Signalen für die Anzeige
+   o Anzeigefarbe von Signalen
+   o Skalierung der Achsen
+   o Beschriftung des Diagramms
+   o Größe des Diagramms beim Ausdruck (nur hier änderbar!)
+
+Auswahl und Farbe der Signale
+-----------------------------
+Die aufgezeichneten Signale sind in der Liste "Signal:" wählbar. Für
+den markierten Listeneintrag zeigt die Checkbox "anzeigen" ob dieses
+Signal in Diagramm erscheint. Standardmäßig erscheinen alle
+aufgezeichneten Signale.
+
+Im Feld "Farbe" erscheint die zugeordnete Signalfarbe. Drückt man den
+Button "?" erscheint ein Farbauswahldialog. Man kann dem Signal eine
+andere Farbe zuordnen. Diese Einstellungen werden beim Speichern
+eines Beispiels nicht gesichert.
+
+
+Skalierung von Achsen
+---------------------
+Das ANAoszi teilt X- und Y-Achse immer in 10 Skalenteile. Ein
+Skalenteil hat beim Standardausdruck entweder 1 cm oder bei 50%
+Vergrößerung 1,5 cm Länge. Mit den beiden Checkboxen wird, getrennt
+für X- und Y-Achse, zwischen automatischer Skalierung und manueller
+Skalierung umgeschaltet.
+
+Bei automatischer Skalierung werden alle aufgezeichneten Signale zur
+Berechnung des Maßstabs miteinbezogen. Die Checkbox "anzeigen" hat
+hier keine Auswirkung. Das Eingabefeld für einen Skalenmaßstab wird
+erst bei deaktivierter automatischer Skalierung aktiv. Eine
+Verkleinerung der Skalierungszahl (gemessen in Einheit/Skalenteil
+d.h. Einheit/cm bei Standarddruck) bewirkt eine Vergrößerung des
+Bildes.
+
+Ist ein Bild größer als die durch die Maßstäbe eingestellte
+Anzeigefläche, so erscheinen Rollbalken mit deren Hilfe ein
+Bildausschnitt gewählt werden kann.
+
+Die Letzteinstellungen der Skalierung werden beim Sichern eines
+Beispiels aufgezeichnet.
+
+TIPS!
+Vergößern und Wählen eines Ausschnitts kann rasch und direkt mit der
+Maus durchgeführt werden. Dazu markiert man mit der Maus einen
+rechteckförmigen Bildausschnitt: Die linke Maustaste wird beim ersten
+gewünschten Eckpunkt des Ausschnittfensters gedrückt und beim
+diagonal gegenüberliegenden Eckpunkt losgelassen. Der Maßstab wird
+automatisch berechnet und kann in diesem Dialog bearbeitet werden. Es
+gibt keine direkte Möglichkeit zum vorherigen Bild zurückzukehren.
+
+Beschriftung eines Diagramms
+----------------------------
+Ein Diagramm besitzt einen Informationstext in der oberen Statuszeile
+des ANAoszis. Der Text ist standardmäßig der Dateiname der
+simulierten Schaltung und soll bei gleichzeitiger Anzeige mehrerer
+ANAoszis die Möglichkeit einer primitiven Dokumentation der
+Experimente ermöglichen. Deshalb kann dieser Text mit Hilfe dieses
+Dialogs verändert werden. Wählt man zusätzlich mit Hilfe der Checkbox
+die Option "Text verriegeln" so bleibt dieser Text auch nach einer
+Neusimulation bestehen.
+
+Ändern der Größe des Audrucks
+-----------------------------
+Der Skalenmaßstab für den Ausdruck des ANAoszis kann von 1 cm pro
+Skalenteil auf 1,5 cm pro Skalenteil vergrößert werden. Alle
+Ausdrucke des Diagramms werden mit Hilfe des Druckertreibers exakt
+auf diesen Maßstab berechnet. Die Checkbox "Beim Drucken Bild um 50%
+vergrößern" ist standardmäßig angekreuzt.
+
+IDH_HELP_FontSelDlg
+Schriftart und Schriftgröße der Beschriftung
+============================================
+
+Es kann eine Schriftart gewählt werden. Die Schriftgröße wird in der
+Einheit 0.1 mm eingestellt. Diese Einstellungen werden für beide
+Skalen und für die Signallegende verwendet. Sie werden nicht
+gespeichert.
+
+IDH_HELP_

@@ -1,0 +1,64 @@
+#  Differenzengleichung          Parameter:           (c) IERT  13.10.1995
+#  2. Ordnung (linear)           T  .. Abtastzeit [s]
+#                                b0 .. Zaehlerkoeffizient z^0 [1]
+#                                b1 .. Zaehlerkoeffizient z^-1 [1]
+#                                b2 .. Zaehlerkoeffizient z^-2 [1]
+#                                a0 .. Nennerkoeffizient z^0 [1]
+#                                a1 .. Nennerkoeffizient z^-1 [1]
+#                                a2 .. Nennerkoeffizient z^-2 [1]
+#
+#                              1        1
+#                     b0 + b1 --- + b2 ---
+#           y(1/z)             z       z z
+# G(1/z) = ------- = -----------------------
+#           u(1/z)             1        1
+#                     a0 + a1 --- + a2 ---
+#                              z       z z
+#
+#          1
+# y(t) = ---- [b0 u(t) +b1 u(t-T) +b2 u(t-2T) -a1 y(t-T) -a2 y(t-2T)]
+#         a0
+#
+BLOCK ADiffg;
+$ BLOCKDIM -1 -1 6 9
+$ TEXT "G(1/z)"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] G(1/z) Eingang";
+OUTPUT
+   y "[1] G(1/z) Ausgang";
+PARAMETER
+   T  = 1.0 "[s] Abtastzeit";
+   b0 = 0.0 "[1] Zaehler z^0";
+   b1 = 0.0 "[1] Zaehler z^-1";
+   b2 = 0.0 "[1] Zaehler z^-2";
+   a0 = 1.0 "[1] Nenner z^0";
+   a1 = 0.0 "[1] Nenner z^-1";
+   a2 = 0.0 "[1] Nenner z^-2";
+VAR
+   u1; u2;
+   y0 DISCRETE; y1; y2;
+   a00;
+SIM
+   y = y0 <- transfer(u);
+ENDSIM
+
+PROCEDURE transfer;
+   y0 = a00*(b0*u + b1*u1 + b2*u2 - a1*y1 - a2*y2);
+   u2 = u1; u1 = u; y2 = y1; y1 = y0;
+   SCHEDULE transfer AT NOW+T;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   IF a0 == 0 THEN
+      EXIT "a0 muss <> 0 sein!";
+   ENDIF
+   a00 = 1/a0;
+   y0 = 0; y1 = 0; y2 = 0; u1 = 0; u2 = 0;
+   SCHEDULE transfer AT NOW;
+ENDINIT
+ENDBLOCK ADiffg;

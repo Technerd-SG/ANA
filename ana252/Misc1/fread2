@@ -1,0 +1,84 @@
+#   Anregung - Dateileser        Parameter:           (c) IERT  27.03.1997
+#                                Name .. Dateiname
+#  Liest die Datei Name zeilen-
+#  weise ein.                    Hinweis:
+#                                Der links- und rechtsseitige Grenzwert
+#  Dateiformat:                  der Amplitude wird aufgezeichnet.
+#
+#  Spalte                        Da der Parameter "Name" des Dateinamen
+#  1       2   3    4            als absoluten Pfad speichert, sind
+#  ---------------------         Beispiele mit diesem Block nicht ohne
+#  1222333 23  332  2323         Anpassung dieses Namens portabel.
+#
+#  Zeit    Daten in drei         Dieser Block ist Bestandteil des Beispiels
+#  in us   weiteren Spalten      "FREAD" und dient als Anregung fuer die
+#                                Erstelung von Dateilesebloecken fuer eigene
+#  Der Datensatz steht zum ab-   Formate.
+#  gespeicherten Zeitpunkt als
+#  Ausgangssignal zur
+#  Verfuegung.
+#
+#  Beispiele fuer gueltige Dateinamen:
+#     "c:\ana214\beispiel\test.dat" ...  absoluter Pfad
+#     "test.dat"    ... Pfad relativ zum ANA.INI-Verzeichnis
+#     "@:\test.dat" ... "@:\" bedeutet "das Verzeichnis in dem das aktuelle
+#                        Beispiel liegt".
+#                        Vorteil: Bei Weitergabe von ANA-Beispielen. Die
+#                                 Datei liegt immer im selben
+#                                 Verzeichnis wie die Beispieldatei.
+#
+BLOCK FREAD2;
+$ BLOCKDIM -1 -1 15 7
+$ TEXT "Datei Leser 1"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   time "0. Wert";
+   w1 "1. Wert";
+   w2 "2. Wert";
+   w3 "3. Wert";
+PARAMETER
+   Name STRING = "@:\test.dat" "Dateiname";
+VAR
+   time0 DISCRETE "Spalte 0 - Zeit";
+   w10 DISCRETE "Spaltenwert 1";
+   w20 DISCRETE "Spaltenwert 2";
+   w30 DISCRETE "Spaltenwert 3";
+   f1 DISCRETE;
+SIM
+   w1 = w10;
+   w2 = w20;
+   w3 = w30;
+   time = time0;
+ENDSIM
+
+PROCEDURE fileread;
+   // Der Datensatz wurde schon frueher gelesen
+   time0 = FGET(f1, 1);
+   w10 = FGET(f1, 2);
+   w20 = FGET(f1, 3);
+   w30 = FGET(f1, 4);
+   FREAD(f1);  // Naechsten Datensatz lesen
+   IF FSTATUS(f1) == 0 THEN
+      SCHEDULE fileread AT FGET(f1, 1) / 1e6;
+   ELSE
+      QUIT; // Dateiende bedeutet Ende der Simulation
+   ENDIF
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE fileend;
+   FCLOSE(f1);
+ENDPROCEDURE
+
+INIT
+   f1 = FOPEN(Name);
+   IF FSTATUS(f1) == 0 THEN
+      SCHEDULE fileread AT FGET(f1, 1) / 1e6;
+   ENDIF
+   time0 = 0; w10 = 0; w20 = 0; w30 = 0;
+   SCHEDULE fileend AT EXIT;
+ENDINIT
+ENDBLOCK FREAD2;

@@ -1,0 +1,30 @@
+#     Potenzierer                Parameter:           (c) IERT  30.04.1997
+#                                k  .. Faktor [1]
+#              u(t)              b  .. Basis [1]
+#    y(t) = k b
+#                                Hinweis:
+#                                Die Basis b muss > 0 sein.
+#
+BLOCK BEXP1;
+$ BLOCKDIM -1 -1 4 3
+$ TEXT "y=k*b^u"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k = 1 "[1] Faktor";
+   b = 2 "[1] Basis";
+SIM
+   y = k*POW(b,u);
+ENDSIM
+INIT
+   IF b <= 0 THEN
+      EXIT "Die Basis b muss >= 0 sein!";
+   ENDIF
+ENDINIT
+ENDBLOCK BEXP1;

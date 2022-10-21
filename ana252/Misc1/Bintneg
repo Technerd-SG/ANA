@@ -1,0 +1,38 @@
+#        Analogrechner           Parameter:           (c) IERT  27.03.1997
+#     Aktiver Verstaerker        k1 .. Verstaerkung [1]
+#     mit einem Eingang          AB .. Anfangsbedingung -y(0) [1]
+#         _
+#        | |\                    ACHTUNG: Dieses Element invertiert!
+#        | |  \                        /t
+#  u  ___| |    \___ y           y = - | (k*u1) dT
+#        | |    /                      /0
+#        | |  /                  Hinweis:
+#        |_|/ |                  Ein ueblicher Analogrechner erlaubt fuer
+#             |                  k nur den Wert 1 oder 10.
+#            AB
+#
+BLOCK BINTNEG;
+$ BLOCKDIM -1 -1 5 3
+$ TEXT "Inv. Integrator"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k  = 1   "[1] Verstaerkung";
+   AB = 0.0 "[1] Anfangsbedingung -y(0)";
+STATE
+   x "[1] Integrator";
+SIM
+   x .= -k*u;
+   y = x;
+ENDSIM
+
+INIT
+   x = -AB;
+ENDINIT
+ENDBLOCK BINTNEG;

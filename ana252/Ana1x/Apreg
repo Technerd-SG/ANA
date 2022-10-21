@@ -1,0 +1,24 @@
+#    Proportionalregler          Parameter:           (c) IERT  07.10.1995
+#        P-Regler                k  .. Verstaerkung [1]
+#
+#                                       y(s)
+#    y(t) = k * u(t)             G(s) = ---- = k
+#                                       u(s)
+#
+BLOCK APReg;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "P-Regler"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] P-Regler Eingang";
+OUTPUT
+   y "[1] P-Regler Ausgang";
+PARAMETER
+   k = 1.0 "[1] Verstaerkung";
+SIM
+   y = k * u;
+ENDSIM
+ENDBLOCK APReg;

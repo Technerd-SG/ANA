@@ -1,0 +1,27 @@
+#     Potenzierer                Parameter:           (c) IERT  30.04.1997
+#                                k  .. Faktor [1]
+#                 x              x  .. Exponent [1]
+#    y(t) = k u(t)
+#                                Hinweis:
+#                                y kann bei ganzzahligen Exponenten x fuer
+#                                beliebige Basis u(t) berechnet werden.
+#                                Ansonsten ist u(t) > 0 erforderlich.
+#
+BLOCK BEXP3;
+$ BLOCKDIM -1 -1 4 3
+$ TEXT "y=k*u^x"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Basis";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k = 1 "[1] Faktor";
+   x = 2 "[1] Exponent";
+SIM
+   y = k*POW(u,x);
+ENDSIM
+ENDBLOCK BEXP3;

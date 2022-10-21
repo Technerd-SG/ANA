@@ -1,0 +1,26 @@
+#        Analogrechner           Parameter:           (c) IERT  27.03.1997
+#     Proportionalelement        k .. Multiplikator [1]
+#     mit einem Eingang
+#                                y = k*u
+#         --
+#  u  ___/ k\_____ y             Hinweis:
+#        \__/                    Ein ueblicher Analogrechner erlaubt nur
+#                                0 <= k <= 1, da dies ein passives Element ist.
+#
+BLOCK BPROP;
+$ BLOCKDIM -1 -1 5 3
+$ TEXT "P-Element"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k=1 "[1] Multiplikator";
+SIM
+   y = k*u;
+ENDSIM
+ENDBLOCK BPROP;

@@ -1,0 +1,47 @@
+#  Quantisierer mit echter Null  Parameter:           (c) IERT  01.04.1997
+#                                dx .. delta X [1]
+#  Das Eingangssignal wird in    dy .. delta Y [1]
+#  Schritten von dx dem
+#  in dy quantisierten
+#  Ausgangssignal zugeordnet.
+#
+BLOCK BQUANT2;
+$ BLOCKDIM -1 -1 7 4
+$ TEXT "Quantisierer 2"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   dx = 1 "[1] delta X";
+   dy = 1 "[1] delta Y";
+VAR
+   a DISCRETE "Schaltzustand";
+   statex DISCRETE "Status";
+SIM
+   ONRISE u > statex+dx/2 DO jump_up;
+   ONRISE u < statex-dx/2 DO jump_down;
+   y = a <- jump_up(u) <- jump_down(u);
+ENDSIM
+
+PROCEDURE jump_up;
+   statex := statex+dx;
+   a := a+dy;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE jump_down;
+   statex := statex-dx;
+   a := a-dy;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   a = 0;      # Mit echter Null!!
+   statex = 0;
+ENDINIT
+ENDBLOCK BQUANT2;

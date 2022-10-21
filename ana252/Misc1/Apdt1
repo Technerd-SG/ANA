@@ -1,0 +1,47 @@
+#          PDT1                  Parameter:           (c) IERT  22.10.1995
+#  Lead bzw. Lagglied            k  .. Verstaerkung [1]
+#                                Td .. Zaehlerzeitkonstante [s]
+#   ^                            T1 .. Nennerzeitkonstante [s]
+#   ||G|         k Td/T1
+#   |[dB]       ........
+#   |          /                        y(s)       1 + s Td
+#   |         /1/T1              G(s) = ---- =  k ----------
+#   +--------/----------->              u(s)       1 + s T1
+#   |       /            w
+#  k|....../                     Hinweis:
+#   |     1/Td                   Fuer Td > T1 wirkt das Element phasenhebend
+#   |                            (Lead-Verhalten). Fuer Td < T1 phasensenkend
+#    Bodediagramm eines Lead     (Lag-Verhalten).
+#
+BLOCK APDT1;
+$ BLOCKDIM -1 -1 6 5
+$ TEXT "PDT1"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] PDT1 Eingang";
+OUTPUT
+   y "[1] PT2 Ausgang";
+PARAMETER
+   k = 2/3  "[1] Verstaerkung";
+   Td = 1/4 "[s] Zaehlerzeitkonstante";
+   T1 = 1/6 "[s] Nennerzeitkonstante";
+STATE
+   x "[1] PDT1";
+VAR
+   a DISCRETE; b DISCRETE; d DISCRETE;
+SIM
+   x .= a*x + b*u;
+   y  = x + d*u;
+ENDSIM
+INIT
+   IF T1 <= 0 THEN
+      EXIT "T1 > 0 erforderlich";
+   ENDIF
+   a = -1/T1;
+   b = (1 - Td/T1)/T1*k;
+   d = Td/T1*k;
+ENDINIT
+ENDBLOCK APDT1;

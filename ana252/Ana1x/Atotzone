@@ -1,0 +1,61 @@
+#   Totzone                      Parameter:           (c) IERT  13.10.1995
+#                                a .. Groesse der Totzone [1]
+#
+#           y ^                  Die Steigung der Verstaerkungskennlinie
+#             |      /           fuer u > a und u < -a ist 1.
+#             |    /
+#          -a |  /               Hinweis:
+#  ---------+-+-+ ---------> u   An Zeitpunkten wo u exakt den Wert
+#          /  | a                a oder -a erreicht wird ein Stuetzpunkt am
+#        /    |                  AnaOszi aufgezeichnet.
+#      /      |
+#
+BLOCK ATotzone;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Totzone"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Totzone Eingang";
+OUTPUT
+   y "[1] Totzone Ausgang";
+PARAMETER
+   a = 0.1 "[1] Groesse der Totzone";
+VAR
+   bstate   DISCRETE "dreiwertiger Zustand";
+SIM
+   SWITCH bstate
+   CASE 0:
+      ONRISE u > a DO set_to_pos;
+      ONRISE u < -a DO set_to_neg;
+      y = 0;
+   CASE 1:
+      ONRISE u <= a DO set_to_zero;
+      y = (u - a);
+   CASE 2:
+      ONRISE u >= -a DO set_to_zero;
+      y = u + a;
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE set_to_pos;
+   bstate = 1;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE set_to_neg;
+   bstate = 2;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE set_to_zero;
+   bstate = 0;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   bstate = 0;
+ENDINIT
+ENDBLOCK ATotzone;

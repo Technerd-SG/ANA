@@ -1,0 +1,29 @@
+#        Analogrechner           Parameter:           (c) IERT  27.03.1997
+#     Aktiver Verstaerker        k .. Verstaerkung [1]
+#     mit einem Eingang
+#
+#        |\                      ACHTUNG: Dieses Element invertiert!
+#        |  \
+#  u  ___|    \___ y             y = -(k*u)
+#        |    /
+#        |  /                    Hinweis:
+#        |/                      Ein ueblicher Analogrechner erlaubt fuer
+#                                k nur den Wert 1 oder 10.
+#
+BLOCK BINV;
+$ BLOCKDIM -1 -1 4 3
+$ TEXT "Inverter"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k = 1 "[1] Verstaerkung u";
+SIM
+   y = -k*u;
+ENDSIM
+ENDBLOCK BINV;

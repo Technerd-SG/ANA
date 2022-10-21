@@ -1,0 +1,58 @@
+#    Mathematischer Taster       Parameter:           (c) IERT  07.10.1995
+#        (Naeherung)             T  .. Abtastzeit [s]
+#                                dt .. Breite des Diracimpulses [s]
+#  Funktionsweise:
+#  Die Eingangsamplitude wird            /  *
+#  abgetastet und in einem        u    /   u     Diracpulsfolge
+#  Diracimpuls mit gleicher      ----o    o----
+#  Flaeche transformiert.              T
+#  Es wird eine endliche
+#  Breite des Diracimpulses      Hinweis:
+#  modelliert.                   ACHTUNG - Wenn ein dynamisches System
+#     ^                          mit einem Diracimpuls angeregt wird,
+#     |   ||                     kann ein z.B ein PT1 dieses Signal
+#     |   || y(nT) = A*dt        SPRUNGFAEHIG uebertragen. Diese Element
+#     |   ||                     naehert Diracimpulse und bewirkt keine
+#     +------------->            kausal richtige  Uebertragung in solchen
+#         dt                     Faellen. Das Problem tritt natuerlich nur
+#   Die Amplitude A kann durch   im Falle von Rueckkopplungen in der
+#   Vorgabe von dt eingestellt   Schaltung auf.
+#   werden.                      SO EIN SYSTEM KOMMT IN DER NATUR PRAKTISCH
+#                                NICHT VOR.
+BLOCK AMathTas;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Diractaster"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] math.Taster Eingang";
+OUTPUT
+   y "[1] math.Taster Ausgang";
+PARAMETER
+   T  = 1.0 "[s] Abtastzeit";
+   dt = 1e-3 "[s] Breite des Diracimpulses";
+VAR
+   y0 DISCRETE;
+SIM
+   y = y0 <- taston(u) <- tastoff;
+ENDSIM
+
+PROCEDURE taston;
+   y0 = u/dt;
+   SCHEDULE taston AT NOW+T;
+   SCHEDULE tastoff AT NOW+dt;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE tastoff;
+   y0 = 0;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   y0 = 0;
+   SCHEDULE taston AT NOW;
+ENDINIT
+ENDBLOCK AMathTas;

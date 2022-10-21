@@ -1,0 +1,175 @@
+&z
+ANAident - Wizard fuer die Identifikation linearer Systeme
+==========================================================
+
+                       ------------------
+     Eingang der       |                |
+     Strecke      -----|>               |
+                       | Identifikation |
+                       |    mittels     |
+                       |  rekursiven   [|----- Fehler y - ymodell
+                       |   Verfahrens   |
+     Ausgang der       |                |
+     Strecke      -----|>               |
+                       |                |
+                       ------------------
+
+Der Wizard ANAident ist ein Programm zum Erstellen von ANA-Bloecken,
+deren Aufgabe es ist lineare Uebertragungssysteme zu identifizieren.
+
+Je nach dem, ob ein bestehender Block veraendert, oder ein neuer erzeugt
+werden soll, werden die aktuellen Einstellungen oder Defaultwerte angezeigt.
+
+Die Auswahl des Identifikationsverfahrens erfolgt in der Combobox.
+
+Folgende Identifikationsverfahren stehen zur Verfuegung:
+
+  * Rekursives Least Square
+  * Hilfsvariablenmethode
+  * Extended RLS
+  * Total RLS
+
+Waehrend der Identifikation ist es moeglich, laufend die aktuellen Ergebnisse
+anzeigen zu lassen. Je nach dem ob G(&z), G(s),Gp(s) oder nichts angezeigt
+werden soll ist unter "Ausgabe" der entsprechende Punkt zu waehlen. Die
+implementierten Identifikationsverfahren basieren darauf, dass der Strecken-
+eingang zwischen zwei Abtastzeitpunkten konstant bleibt.
+
+ANA bietet jedoch auch die Moeglichkeit, auch dann eine Identifikation
+vor unehmen, wenn der Eingang zwischen den Abtastzeitpunkten nicht konstant
+ist.
+
+Dabei wird zwischen den Abtastpunkten linear interpolier , es wird also
+angenommen, dass am Eingang kein Halteglied 0ter Ordnung sondern ein
+"polynomal hold" ist. Die so ermittelte Stecke wird als  p(s) bezeichnet.
+
+Um die Identifikationsergebnisse einem Adaptiven Regler zuzufuehren,
+koennen die Parameter auf Blockausgaenge umgeleitet werden. Ist dies
+erwuenscht, so ist er Punkt "Parameter->Aus" zu markieren.
+
+Weiters sind die Ordnung des Zaehlers, die Ordnung des Nenners, die
+Abtastrate und eine eventuelle Totzeit einzugeben.
+
+Die Zaehler- bzw. Nennerordnung bezieht sich immer auf G(&z), auch wenn
+G(s) ausgegeben wird.
+
+Die Zaehlerodnung darf nicht groesser als die Nennerordnung sein.
+
+Die Totzeit darf nur ein Vielfaches der Abtastzeit betragen.
+
+Nach Eingabe der Parameter kann der Block mit "OK" gespeichert oder mit
+"Abbruch" verworfen werden.
+
+Die Identifikationsverfahren im Detail:
+
+
+&0
+Identifikationsverfahren: Rekursives Least Square (RLS)
+                          ============================
+
+Schaetzt die Systemparameter nach der Methode der kleinsten Fehlerquadrate.
+Es wird sowohl am Eingang als auch am Ausgang Rauschfreiheit vorausgesetzt.
+
+Parameter:     Lambda ... Vergessensfaktor
+                              es gilt: Lambda = exp(-Tab/Tv) wobei
+                              Tv die Zeitkonstante des exponentiellen
+                              Vergessens ist.
+                          Sinnvoll Werte von Lambda liegen im Bereich
+                          0.95 < Lamdba < 1
+
+               Alpha ... Anfangswert der Diagonalelemente der Kovarianz-
+                         matrix. Sinnvoll: 1e4
+
+&1
+Identifikationsverfahren: Rekursives Least Square mit QR-Faktorisierung
+                          =============================================
+
+Wie Rekursives Least Square, allerdings wird hier das minimale
+Fehlerquadrat mit Hilfe der QR-Faktorisierung gesucht, was numerisch
+von Vorteil ist.
+
+Parameter:     Lambda ... Vergessensfaktor
+                              es gilt: Lambda = exp(-Tab/Tv) wobei
+                              Tv die Zeitkonstante des exponentiellen
+                              Vergessens ist.
+                          Sinnvoll Werte von Lambda liegen im Bereich
+                          0.95 < Lamdba < 1
+
+               Alpha  ... Anfangswert der QR-Faktorisierung
+&2
+Identifikationsverfahren: Hilfsvariablenmethode
+                          =====================
+
+Ausgehend davon, dass das ungestoerte Systemausgangssignal nicht zur
+Verfuegung steht, wird ein Schaetzwert dieses Signals als Hilfsvariable
+verwendet. Dazu wird ein Hilfsmodell erzeugt, dessen Parametervektor
+wiefolgt errechnet wird:
+
+       Thetah(k) = (1-Gamma)*Thetah(k-1) + Gamma*Theta
+
+                          Thetah .. Parametervektor-Hilfsmodell
+                          Theta  .. errechneter Parametervektor
+
+Parameter:     Lambda .. Vergessensfaktor
+                              es gilt: Lambda=exp(-Tab/Tv) wobei
+                              Tv die Zeitkonstante des exponentiellen
+                              Vergessens ist.
+                         Sinnvoll Werte von Lambda liegen im Bereich
+                         0.95 < Lamdba < 1
+
+               Alpha ... Anfangswert der Diagonalelemente der Kovarianz-
+                         matrix. Sinnvoll: 1e4
+
+               Gamma ... siehe obenstehende Erklaerung
+                         Sinnvoll: 0.9 < Gamma < 0.99
+
+               d     ... siehe obenstehende Erklaerung
+                         die optimale Wahl von d spielt keine entscheidende
+                         Rolle.
+
+&3
+Identifikationsverfahren: Extended RLS
+                          ============
+
+Die Struktur des Stoerfilters beim RLS wird hier durch C(&z)/A(&z) ersetzt.
+A(&z) ist das Nennerpolynom von G(&z).
+
+Parameter:     Lambda .. Vergessensfaktor
+                              es gilt: Lambda=exp(-Tab/Tv) wobei
+                              Tv die Zeitkonstante des exponentiellen
+                              Vergessens ist.
+                         Sinnvoll Werte von Lambda liegen im Bereich
+                         0.95 < Lamdba < 1
+
+               Alpha ... Anfangswert der Diagonalelemente der Kovarianz-
+                         matrix. Sinnvoll: 1e4
+
+               Filtergrad... Ordnung von C(&z), darf nicht groesser als
+                             die Nennerordnung sein.
+
+&4
+Identifikationsverfahren: Total RLS
+                          =========
+
+Parameter:     Lambda ... Vergessensfaktor
+                              es gilt: Lambda=exp(-Tab/Tv) wobei
+                              Tv die Zeitkonstante des exponentiellen
+                              Vergessens ist.
+                          Sinnvoll Werte von Lambda liegen im Bereich
+                          0.95 < Lamdba < 1
+
+               Alpha  ... Anfangswert der QR-Faktorisierung
+
+&5
+Identifikationsverfahren: Adjusted RLS
+                          ============
+
+Parameter:     Lambda ... Vergessensfaktor
+                              es gilt: Lambda=exp(-Tab/Tv) wobei
+                              Tv die Zeitkonstante des exponentiellen
+                              Vergessens ist.
+                          Sinnvoll Werte von Lambda liegen im Bereich
+                          0.95 < Lamdba < 1
+
+               Alpha  ... Anfangswert der QR-Faktorisierung
+

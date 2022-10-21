@@ -1,0 +1,27 @@
+#   Anregung - Rampenfunktion    Parameter:           (c) IERT  26.09.1995
+#  y ^                           k .. Steigung der Rampe (dy / dt) [1/s]
+# k+d| .....  /                  d .. Amplitude y(t = 0) [1]
+#    |      / .
+#    |    /   .                  y = k*t + d
+#    |  /     .
+#  d |/       .
+#   /|        .
+#   -+-------------->
+#    0        1   t
+#
+BLOCK ARampe;
+$ BLOCKDIM -1 -1 6 5
+$ TEXT "Rampe"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y     "[1] Rampenausgang";
+PARAMETER
+   k = 1 "[1/s] Steigung";
+   d = 0 "[1] Ausgang y(t = 0)";
+SIM
+   y = k*NOW + d;
+ENDSIM
+ENDBLOCK ARampe;

@@ -1,0 +1,23 @@
+#     Logarithmierer             Parameter:           (c) IERT  30.04.1997
+#                                k  .. Faktor [1]
+#
+#    y(t) = k log10(u(t))        Hinweis:
+#                                Es wird der 10er Logarithmus verwendet.
+#
+BLOCK BLOG;
+$ BLOCKDIM -1 -1 5 3
+$ TEXT "y=k*LOG(u)"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k = 1 "[1] Faktor";
+SIM
+   y = k*LOG(u);
+ENDSIM
+ENDBLOCK BLOG;

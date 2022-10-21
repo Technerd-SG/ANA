@@ -1,0 +1,70 @@
+#   Anregung -                   Parameter:           (c) IERT  27.03.1997
+#   Binaeres Pseudorauschen
+#  y ^            4-Bit          T  .. Taktzeit [s]
+#    |                           a1 .. Amplitude Zustand 0 [1]
+#  a2|  ... .....   ...   ....   a2 .. Amplitude Zustand 1 [1]
+#    |  | | |   |   | |   |      n1 .. Register Bit 1 [0/1]
+#  a1|..| |.|   |...| |...|      n2 .. Register Bit 2 [0/1]
+#    |            ->-T-<-        n3 .. Register Bit 3 [0/1]
+#   -+-  -------------------->   n4 .. Register Bit 4 [0/1]
+#    0                     t
+#                                Hinweis:
+#  Das Signal wird durch die     Die binaere Pseudozufallsfolge wird mit
+#  Rueckkopplung eines 8-Bit     den einstellbaren Anfangswerten des
+#  tiefen Schieberegister        Schieberegister begonnen.
+#  erzeugt. Die Folgenlaenge     Der links- und rechtsseitige Grenzwert
+#  betraegt 16 Zustaende.        der Amplitude wird aufgezeichnet.
+#
+BLOCK BRAUSCH4;
+$ BLOCKDIM -1 -1 7 9
+$ TEXT "P.Rauschen 4-Bit"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   T  =  0.1 "[s] Taktzeit";
+   a1 = -1.0 "[1] Amplitude Zustand 0";
+   a2 =  1.0 "[1] Amplitude Zustand 1";
+   n1 BOOL = 1 "[0/1] Register Bit 1";
+   n2 BOOL = 1 "[0/1] Register Bit 2";
+   n3 BOOL = 0 "[0/1] Register Bit 3";
+   n4 BOOL = 0 "[0/1] Register Bit 4";
+VAR
+   merker DISCRETE  "Zweiwertiger Zustand";
+   k0 DISCRETE      "Antivalenz Ergebnis";
+SIM
+   SWITCH merker
+   CASE 0:
+      y = a1;
+   CASE 1:
+      y = a2;
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE shift;
+   IF  n4 <> n1  THEN // Antivalenz
+      k0 = 1;
+   ELSE
+      k0 = 0;
+   ENDIF
+   merker = n4;
+   n4 = n3;
+   n3 = n2;
+   n2 = n1;
+   n1 = k0;
+   SCHEDULE shift AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF T <= 0  THEN
+      EXIT "T muss > 0 sein !";
+   ENDIF
+   k0 = 0;
+   merker = n4;
+   SCHEDULE shift AT NOW;
+ENDINIT
+ENDBLOCK BRAUSCH4;

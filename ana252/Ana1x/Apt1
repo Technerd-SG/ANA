@@ -1,0 +1,47 @@
+#  Verzoegerung 1.Ordnung        Parameter:           (c) IERT  27.09.1995
+#           PT1                  k  .. Verstaerkung (stationaer) [1]
+#                                T1 .. Zeitkonstante [s]
+#  Sprungantwort u(t)=1(t)       AB .. Anfangsbedingung y(0) [1]
+#
+#  y ^
+#    |          . . . . . k             y(s)       k
+#    |     . '                   G(s) = ---- = ----------
+#    |   .  - ca. 63%                   u(s)    1 + s T1
+#    | .  |
+#    |.   |                      Hinweis:
+#   -+--------------------->     y(0) kann vorgegeben werden
+#    0    T1             t       Als Ableitung des Ausgangsignals y ist
+#                                das interne Signal yp markierbar.
+#
+BLOCK APT1;
+$ BLOCKDIM -1 -1 6 5
+$ TEXT "PT1"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] PT1 Eingang";
+OUTPUT
+   y "[1] PT1 Ausgang";
+PARAMETER
+   k = 1.0 "[1] Verstaerkung";
+   T1 = 1.0 "[s] Zeitkonstante";
+   AB = 0.0 "[1] Anfangsbedingung";
+STATE
+   x "[1] PT1";
+VAR
+   MT1 DISCRETE; kT1 DISCRETE;
+   yp;   // Ableitung des Ausgangssignals
+SIM
+   yp = MT1*x +kT1*u;
+   x .= yp;
+   y  = x;
+ENDSIM
+
+INIT
+   x = AB;
+   MT1 = -1 / T1;
+   kT1 = k / T1;
+ENDINIT
+ENDBLOCK APT1;

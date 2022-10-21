@@ -1,0 +1,64 @@
+#    Abtasten und Halten         Parameter:           (c) IERT  01.03.1997
+#     Sample and Hold            T  .. Abtastzeit [s]
+#   mit Interpolation der
+#   Huellkurve mittels eines
+#   Geradenstuecks
+#   UND RETARDIERUNG DES Ausgangssignals
+#   um EINEN ABTASTSCHRITT (Kausalitaet)
+#
+#
+#            math.Taster       Interpolator
+#                  /  *  +--------+     +--------+          /
+#           u    /   u   |        |     |   1    |      y = up
+#          ----o    o----+  Ghp   +-----+  ---   +------
+#                T       |        |     |   z    |
+#                        +--------+     +--------+
+#                      mathematisches      mit Ghsp
+#                      Blockschaltbild
+#
+#                                Hinweis:
+#                                Der links- und rechtsseitige Grenzwert
+#                                der Amplitude wird aufgezeichnet.
+#
+BLOCK Ghp;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "S&H Polygon"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] S&Hp Eingang";
+OUTPUT
+   y "[1] S&Hp Ausgang";
+PARAMETER
+   T = 1.0 "[s] Abtastzeit";
+VAR
+   x;
+   c DISCRETE; d DISCRETE;
+   u0 DISCRETE;
+   t0 DISCRETE;
+SIM
+   x = NOW-t0;
+   y = c*x + d <- sample(u);
+ENDSIM
+
+PROCEDURE sample;
+   d = u0;
+   c = (u - u0)/T;
+   u0 = u;
+   t0 = NOW;
+   SCHEDULE sample AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF T <= 0 THEN
+      EXIT "T muss > 0 sein!";
+   ENDIF
+   t0 = NOW;
+   c = 0; d = 0;
+   u0 = 0;
+   SCHEDULE sample AT NOW;
+ENDINIT
+ENDBLOCK Ghp;

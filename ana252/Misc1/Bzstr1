@@ -1,0 +1,37 @@
+#  Zustandsraumdarstellung       Parameter:           (c) IERT  30.03.1997
+#     System 1. Ordnung          A  .. System-Matrix A [1]
+#                                B  .. Eingangs-Matrix B [1]
+#      x .= Ax + Bu              C  .. Ausgangs-Matrix C [1]
+#      y  = Cx + Du              D  .. Durchgangs-Matrix D [1]
+#                                x0 .. AB Zustand 1 [1]
+#
+BLOCK BZSTR1;
+$ BLOCKDIM -1 -1 6 7
+$ TEXT "ZR 1.0"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+   ax1 "[1] Zustand";
+PARAMETER
+   A = -1 "[1] System-Matrix A";
+   B = 1 "[1] Eingangs-Matrix B";
+   C = 1 "[1] Ausgangs-Matrix C";
+   D = 0 "[1] Durchgangs-Matrix D";
+   x0 = 0 "[1] AB Zustand 1";
+STATE
+   X  "[1] X ";
+SIM
+   X .= A*X + B*u;
+   y  = C*X + D*u;
+   ax1 = X;
+ENDSIM
+
+INIT
+   X = x0;
+ENDINIT
+ENDBLOCK BZSTR1;

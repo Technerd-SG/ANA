@@ -1,0 +1,30 @@
+#   Anregung - Sinusfunktion     Parameter:           (c) IERT  26.09.1995
+#  y ^                           A   .. Ausgangsamplitude [1]
+#    |                           wn  .. Kreisfrequenz [rad/s]
+#    |         -                 Dw  .. Kreisfrequenzaenderung [rad/s^2]
+#  O |....../....\ ........      phi .. Phasenverschiebung [Grad]
+#    | \   /      \   /          O   .. Offset [1]
+#    |   -          -
+#   -+----------------------->   y = A*sin( (wn+Dw*t)*t + phi) + O
+#    0                     t
+#                                Hinweis:
+#                                z.B. wn = 2*cPI*10 fuer f = 10 Hz
+BLOCK ASinus;
+$ BLOCKDIM -1 -1 6 7
+$ TEXT "Sinus"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y      "[1] Sinusausgang";
+PARAMETER
+   A  = 1 "[1] Ausgangsamplitude";
+   wn = 1 "[s] Kreisfrequenz";
+   Dw = 0 "[1] Kreisfrequenzaenderung";
+   phi= 0 "[Grad] Phasenverschiebung";
+   O  = 0 "[1] Offset";
+SIM
+   y = A * SIN((wn + Dw*NOW)*NOW + phi/180*cPI) + O;
+ENDSIM
+ENDBLOCK ASinus;

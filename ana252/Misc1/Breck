@@ -1,0 +1,61 @@
+#   Anregung - Rechteckfunktion  Parameter:           (c) IERT  27.03.1997
+#  y ^                           a1 .. Amplitude EIN [1]
+#    |     <-v*T->               a2 .. Amplitude AUS [1]
+#  a1|     .......         ...   v  .. Anteil der EIN Periode [0..1]
+#    |     |     |         |     T =   Periodendauer [s]
+#  a2|.  ..|     |.........|
+#    |     <-------T------->         /  a1 : t % T < v*T
+#   -+-  -------------------->   y = |
+#    0                     t         \  a2 : sonst
+#
+#                                Hinweis: Es wird immer mit EIN gestartet.
+#                                Der links- und rechtsseitige Grenzwert
+#                                der Amplitude wird aufgezeichnet.
+BLOCK BRECK;
+$ BLOCKDIM -1 -1 5 7
+$ TEXT "Rechteck"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Rechteck Ausgang";
+PARAMETER
+   a1 =  1.0 "[1] Amplitude EIN";
+   a2 = -1.0 "[1] Amplitude AUS";
+   v =   0.5 "[0..1] Anteil der EIN Periode";
+   T =   1.0 "[s] Periodendauer";
+VAR
+   state DISCRETE "Zweiwertiger Zustand";
+SIM
+   SWITCH state
+   CASE 0:
+      y = a1;
+   CASE 1:
+      y = a2;
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE max;
+   state = 0;
+   SCHEDULE min AT NOW+v*T;
+   SCHEDULE max AT NOW+T;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE min;
+   state = 1;
+   STORE ALL;
+ENDPROCEDURE
+
+INIT
+   IF T <= 0 THEN
+      EXIT "T muss > 0 sein";
+   ENDIF
+   IF v < 0 OR v > 1 THEN
+      EXIT "v muss zwischen 0 und 1 sein";
+   ENDIF
+   state = 0; // starte mit max
+   SCHEDULE max AT NOW;
+ENDINIT
+ENDBLOCK BRECK;

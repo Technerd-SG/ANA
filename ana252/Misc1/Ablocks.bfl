@@ -1,0 +1,77 @@
+$[Dokumentation]
+BFRAME1,Rahmen
+BTEXT1,Schriftfeld 1.0 fach
+BTEXT15,Schriftfeld 1.5 fach
+BTEXT2,Schriftfeld 2.0 fach
+ANA,ANA Copyright 1986-97
+
+$[SOCKET-Signale}
+SockDef,Definition eines SOCKET-Signals
+SockRef,Referenz auf ein SOCKET-Signal
+
+$[Rauschen]
+RGLEICH,Gleichverteiltes Rauschen [0..1]
+REXP,Exponentiell verteiltes Rauschen [0..inf] p(x) = exp(-x) : x >= 0
+RGAUSS,Gaussverteiltes Rauschen [-inf..inf] p(x) = 1/sqrt(2 Pi) exp(-x^2/2)
+BRAUSCH4,Binaeres Pseudorauschen 4-Bit
+BRAUSCH8,Binaeres Pseudorauschen 8-Bit
+
+$[Abtastsysteme]
+GHP,Abtasthalteglied mit linearer Interpolation (Polygonial Hold)
+GHSP,Abtasthalteglied mit Spline-Interpolation (Spline Hold)
+
+$[Testsignale Dateileser]
+BKONST,Konstante
+BIMPULS,Impuls
+BRECK,Rechteck
+B3ECK,Dreieck
+FREAD2,Dateileser fuer spezielles Format
+BKONST2,2 Konstanten
+BKONST3,3 Konstanten
+BKONST4,4 Konstanten
+BKONST5,5 Konstanten
+
+$[Kennflaechen]
+BTABLE1,1-dimensionale Tabelle - Kennlinie
+BTABLE2,2-dimensionale Tabelle - Kennflache
+
+$[Analogrechner]
+BKONST,Konstante
+BPROP,Proportionalelement
+BINTNEG,Integrator mit invertierendem Eingang
+BINT2NEG,Integrator mit 2 invertierenden Eingaengen
+BINT3NEG,Integrator mit 3 invertierenden Eingaengen
+BINV,Inverter
+BINV2,Inverter mit 2 Eingaengen
+BINV3,Inverter mit 3 Eingaengen
+BINT4NEG,Integrator mit 4 invertierenden Eingaengen
+BINT5NEG,Integrator mit 5 invertierenden Eingaengen
+BINV4,Inverter mit 4 Eingaengen
+BINV5,Inverter mit 5 Eingaengen
+
+$[Zustandsraum]
+BZSTR1,Zustandsraummodell 1. Ordnung
+BZSTR2,Zustandsraummodell 2. Ordnung
+BZSTR3,Zustandsraummodell 3. Ordnung
+
+$[Mathematik]
+BABS,Betragsbildner
+BLOG,Logarithmierer
+BDELOG,Delogarithmierer
+BEXP1,y = k*b^u
+BEXP2,y = k*u1^u2
+BEXP3,y = k*u^x
+
+$[Linear]
+APDT1,PDT1 (Lead bzw. Lagglied)
+BGSM,Gleichstrommaschine
+BDPI,Digitaler PI-Regler
+
+$[Nichtlinear]
+QUANT,Quantisierer
+BQUANT1,Quantisierer ohne echter Null
+BQUANT2,Quantisierer mit echter Null
+BPOLYG3,Polygonzug mit 3 Stuetzstellen
+BPOLYG5,Polygonzug mit 5 Stuetzstellen
+BPOLYG7,Polygonzug mit 7 Stuetzstellen
+ANBEG,Anstiegsbegrenzer

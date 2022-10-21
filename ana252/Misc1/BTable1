@@ -1,0 +1,63 @@
+#  Kennlinienelement             Parameter:           (c) IERT  14.10.1997
+#                                fname ... Dateiname der Kennlinie
+#
+#  Die Kennlinie wird durch Angabe von Stuetzpunkten definiert.
+#  Der Stuetzpunktabstand der Eingangsvariablen-X ist aequidistant
+#  d.h. es werden nur Y-Werte angegeben. Daten zwischen den
+#  Stuetzpunkten werden linear interpoliert. Die Eingangsvariable-X
+#  wird durch Angabe von MinX und MaxX linear skaliert.
+#  Alle Daten sind in einer ASCII-Datei bereitzustellen. Deren Name
+#  ist Parameter des Blocks.
+#
+#  Beispiele fuer gueltige Dateinamen:
+#     "c:\ana214\beispiel\kenn1.txt" ...  absoluter Pfad
+#     "kenn1.txt"    ... Pfad relativ zum ANA.INI-Verzeichnis
+#     "@:\kenn1.txt" ... "@:\" bedeutet "das Verzeichnis in dem das aktuelle
+#                        Beispiel liegt".
+#                        Vorteil: Bei Weitergabe von ANA-Beispielen. Die
+#                                 Kennliniendatei liegt immer im selben
+#                                 Verzeichnis wie die Beispieldatei.
+#  Datenformat:
+#     0. 0. 1
+#     MinX MaxX XAnzahl
+#     YWerte ...
+#
+#  Die ersten beiden Zahlen sind die Skalierung der Eingangsgroesse-X.
+#  Danach folgt die Anzahl der Stuetzpunkte als Ganzzahl.
+#  Die folgenden drei Werte sind fuer 1-dimensionale Tabellen fix 0. 0. 1.
+#  Danach folgen die YWerte.
+#  Leerzeichen und Zeilenumbrueche spielen keine Rolle.
+#
+#  Beispiel fuer eine lineare Kennlinie mit X = [-2 10] und 7 Stuetzpunkten:
+#  -2. 10. 7
+#  0. 0. 1
+#  -2. 0. 2. 4. 6. 8. 10.
+#
+BLOCK BTable1;
+$ BLOCKDIM -1 -1 10 5
+$ TEXT "Kennlinie"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] X-Eingang";
+OUTPUT
+   y "[1] Y-Ausgang";
+PARAMETER
+   fname STRING = "@:\linie.txt" "Kennlinie";
+VAR
+   tabhandle DISCRETE;
+SIM
+   y = TABLEGET(tabhandle, 0., u);
+ENDSIM
+
+PROCEDURE tabclose;
+   TABLECLOSE(tabhandle);
+ENDPROCEDURE
+
+INIT
+   tabhandle = TABLEOPEN(fname);
+   SCHEDULE tabclose AT EXIT;
+ENDINIT
+ENDBLOCK BTable1;

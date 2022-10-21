@@ -1,0 +1,63 @@
+#  Polygonzug mit 3 Stuetz-      Parameter:           (c) IERT  01.04.1997
+#        punkten                 u1 .. u - Knickpunkt 1 [1]
+#                                y1 .. y - Knickpunkt 1 [1]
+#  Kennlinie                     u2 .. u - Knickpunkt 2 [1]
+#                                y2 .. y - Knickpunkt 2 [1]
+#  y ^                           u3 .. u - Knickpunkt 3 [1]
+#    |                           y3 .. y - Knickpunkt 3 [1]
+#    |      y2 .
+#    |                           Zwischen den Stuetzpunkten (un/yn) wird linear
+#    |                . y3       interpoliert. Fuer u > u3 wird die Gerade
+#   y1 .                         (u2/y2) - (u3/y3), fuer u < u1 die Gerade
+#   -+--------------------->     (u1/y1) - (u2/y2) weiterverwendet.
+#    0 u1    u2       u3 u
+#
+BLOCK BPOLYG3;
+$ BLOCKDIM -1 -1 7 8
+$ TEXT "Polygon 3"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Polygon Eingang";
+OUTPUT
+   y "[1] Polygon Ausgang";
+PARAMETER
+   u1 = -2.0 "[1]  u - Knickpunkt 1 ";
+   y1 =  2.0 "[1]  y - Knickpunkt 1 ";
+   u2 =  0.0 "[1]  u - Knickpunkt 2 ";
+   y2 =  0.0 "[1]  y - Knickpunkt 2 ";
+   u3 =  2.0 "[1]  u - Knickpunkt 3 ";
+   y3 =  2.0 "[1]  y - Knickpunkt 3 ";
+VAR
+   bstate   DISCRETE "Zustand";
+SIM
+   SWITCH bstate
+   CASE 0:  # u zwischen -unendl. und u2
+      ONRISE u >  u2 DO
+         PROCEDURE;
+            bstate = 1;
+            STORE ALL;
+         ENDPROCEDURE
+      y = y1+(u-u1)*((y2-y1)/(u2-u1));
+   CASE 1:  # u zwischen u2 und +unendl.
+      ONRISE u <= u2 DO
+         PROCEDURE;
+            bstate = 0;
+            STORE ALL;
+         ENDPROCEDURE
+      y = y2+(u-u2)*((y3-y2)/(u3-u2));
+   ENDSWITCH
+ENDSIM
+
+INIT
+   IF u2 <= u1 THEN
+      EXIT "u2 darf nicht kleiner oder gleich u1 sein!";
+   ENDIF
+   IF u3 <= u2 THEN
+      EXIT "u3 darf nicht kleiner oder gleich u2 sein!";
+   ENDIF
+   bstate = 0;
+ENDINIT
+ENDBLOCK BPOLYG3;

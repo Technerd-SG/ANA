@@ -1,0 +1,19 @@
+#   Anregung - Konstante         Parameter:           (c) IERT  27.03.1997
+#                                k0 .. Wert des Ausgangs y [1]
+#  y = k0
+#
+BLOCK BKONST;
+$ BLOCKDIM -1 -1 5 3
+$ TEXT "Konstante"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k0 = 1 "[1] Konstante";
+SIM
+   y = k0;
+ENDSIM
+ENDBLOCK BKONST;

@@ -1,0 +1,694 @@
+IDH_HELP_General
+Glossar
+=======
+
+ANAide      ANA Integreated Development Environment
+            Intergrierte Enwicklungsumgebung deren Herzstück der
+            Schaltungseditor ist.
+
+ANAmdl      ANA Module Description Language
+            Sprache mit der die Blöcke von ANA programmiert werden.
+
+ANAoszi     ANA Oszilloskop
+            Darstellungsfenster der Simulationsergebnisse.
+
+ANAlaplace  ANA Laplace Wizard
+            Eingabemöglichkeit von G(s) und G(z).
+
+ANAident    ANA Identifikations Wizard
+            Rekursive Parameterschätzverfahren für die Identifikation
+            von Übertragungsfunktionen.
+
+ANAfuzzy    ANA Fuzzy Wizard
+            Eingabe von Fuzzy Blöcken mit Hilfe eines graphischen
+            Editors.
+
+ANAneuro    ANA Neuronale Netzwerke Wizard
+            Eingabe von Neuronalen Netzwerkblöcken mit Hilfe eines
+            graphischen Editors.
+
+ANAcmd      ANA Command Language
+            Interpretersprache zur Ablaufsteuerung und Optimierung.
+IDH_HELP_MarkDataDlg
+Markieren von Signalen für das ANAoszi
+======================================
+
+Dieser Dialog dient zum Markieren bzw. Entmarkieren von Signalen
+eines Blocks. Alle markierten Signale werden während eines
+Simulationslaufes gespeichert und im ANAoszi angezeigt.
+
+Mit der Auswahlliste in der linken Dialoghälfte wählt man das
+betroffene Signal. Mit dem Button "Ändern" mann der jeweils
+gegenteilige Markierungszustand des Signals hergestellt werden.
+Markierte Signale werden durch das Zeichen * in der ersten Spalte
+der Signalliste angezeigt.
+
+Mit Hilfe der Buttons "Alles markieren" bzw. "Alles entmarkieren"
+können alle Signale eines Blocks gleichzeitig behandelt werden.
+
+Sind außer den Blockausgangssignalen zusätzliche Signale
+(blockinterne Signale) markiert, so wird dies nach dem Verlassen des
+Dialogs durch einen kleinen roten Punkt in der rechten oberen Ecke
+des Blocks signalisiert.
+
+Markierungen für Blockausgangssignale können wahlweise durch
+Benutzung dieses Dialogs oder direkt durch Anklicken des
+Ausgangskonnektors des Blocks mit der rechten Maustaste transparent
+verändert werden.
+
+IDH_HELP_BlockLayoutDlg
+Ändern der optischen Gestalt eines Blocks
+=========================================
+
+Dieser Dialog organisiert die optische Gestalt eines Blocks. Dabei
+können Abmessungen, Textinformation und Bildinformation vielfältig
+vorgebeben werden.
+
+Abmessungen
+-----------
+Die Abmessungen eines Blocks können entweder direkt mit der Maus,
+durch Fassen und Verschieben der rechten unteren Ecke eines Blocks
+oder durch Ändern der Einstellungen im Bereich "Abmessungen" dieses
+Dialogs verändert werden. Die Maßeinheit für Breite und Höhe eines
+Blocks ist das Rastermaß des Schaltungseditors.
+In allen Fällen modifiziert ANA einen eingegebenen Vorschlag für
+die Blockabmessungen so, daß die Eingänge und Ausgänge des Blocks
+erkennbar bleiben.
+Daher werden im Anzeigebereich "Anschlüsse" die Anzahl der Eingänge
+und Ausgänge des Blocks zur Information angezeigt.
+
+Textinformation
+---------------
+Text wird mit Hilfe einer Editbox im Bereich "Text" eingegeben.
+Neben dem Zentrieren jeder einzelnen Textzeile kann der Text
+auch noch durch Ankreuzen von "Parameter anzeigen" um die
+Parameterliste des Blocks erweitert werden.
+Die Ausrichtung des Text relativ zum Blockrahmen kann eingestellt
+werden. Die Schriftart und Schriftgröße ist fix voreingestellt und
+kann nicht verändert werden. Ist die Textfläche größer als der Block,
+so wird die Textfläche an den Blockkanten durch Clipping beschnitten.
+Überlappen sich Textinformation und Bildinformation
+eines Blocks so wird der Text immer über das Bild geschrieben.
+
+Bildinformation
+---------------
+Blöcke können mit Bildern gestaltet werden. Dazu können entweder
+Dateien im ANAicl Format (rudimentäres HPGL) oder im Microsoft Bitmap
+Format (Dateierweiterung BMP) verwendet werden.
+Um eine Bilddatei verwenden zu können, muß sie im Verzeichnis das
+durch die ANA.INI Variable ICONDIR benannt wird, abgelegt sein.
+Unter dem Button "Ikone hinzufügen" befindet sich eine Listbox.
+Befindet sich die gewünschte Graphik noch nicht in diesem
+Auswahlelement, so kann sie durch Betätigung des Buttons "Ikone
+hinzufügen" in diese Liste übernommen werden.
+Die Abmessungen einer Graphik können entweder in der Einheit des
+Rastermaßes vorgeben werden oder es kann dies durch Ankreuzen von "hat
+Blöckgröße" automatisch mit der aktuellen Größe eines Blocks
+mitverändert werden. Dies kann auch dazu führen, daß das
+Seitenverhältnis einer Graphik verloren geht und damit Verzerrungen
+erkennbar.
+Durch einstellbare Ausrichtung der Graphik kann sich diese sich die
+Blocksymbolfäche mit einer Textinformation teilen (z.B.
+Textinformation "Oben bündig", Bildinformation bei
+fixierten Abmessungen "Unten bündig").
+
+IDH_HELP_TextBlockLayoutDlg
+Eingabe von Text zur Beschriftung einer Schaltung
+=================================================
+
+Dieser Dialog erlaubt die Eingabe von Textblöcken zur Beschriftung der
+Schaltung. Die Schriftart ist fix voreingestellt und nicht
+veränderlich.
+Die Schriftgröße kann durch einen Schriftgrößenfaktor gewählt werden.
+Dabei bedeutet 1.0 die Einheitsgröße der Schrift, wie Sie zur
+Beschriftung der Blöcke mit Textinformation (z.B. Parameter) verwendet
+wird.
+Alle Beschriftungen werden bei Änderung des Rastermaßes möglichst
+proportional mitskaliert.
+Durch Ankreuzen von "Zentriere jede Zeile" können mehrzeilige Texte
+zentriert gestaltet werden.
+
+IDH_HELP_OptionsDlg
+Wahl des Lösungsverfahrens und des Signals für die ANAoszi x-Achse
+==================================================================
+
+Mit diesem Dialog kontrolliert man
+   o  ANAoszi-Plots x-Achsen-Steuerung
+   o  Genauigkeitssteuerung
+   o  Wahl eines Integrationsverfahrens
+
+Nach erfolgter Übersetzung können hier die Parameter für den folgenden
+Simulationslauf eingestellt werden. Mit dem Button "OK" startet man
+die Simulation. Alle Einstellungen in diesem Dialog werden beim
+Speichern einer ANA Schaltung mit abgelegt und stehen somit beim
+erneuten Laden einer Schaltung in der letzten Konfiguration zur
+Verfügung.
+Der Button "Standardwerte" bringt Grundeinstellungen für alle Felder
+mit denen sich der Großteil aller Beispiele ohne weiteres Beachten der
+Bedeutung der Felder simulieren läßt.
+Der Dialog gliedert sich in zwei Aufgabenbereiche
+   o Wahl und Kontrolle des Integrationsverfahrens (oben und Mitte)
+   o Auswahl des Signals für die x-Achse des ANAoszi (unten)
+
+ANAoszi-Plots mit der Zeit als x-Achse
+--------------------------------------
+Dazu wählt man den Eintrag "time" in der Listbox. Alle für den
+Simulationslauf markierten Signale werden in Abhängigkeit der Zeit in
+einem gemeinsamen Koordinatensystem dargestellt. Während der
+Simulation kann der Maßstab des Graphen durch Bedienelemente des
+ANAoszis verändert werden.
+
+ANAoszi-Plots in Abhängigkeit eines Signales als x-Achse (Phasenebene)
+----------------------------------------------------------------------
+Man wählt das gewünschte x-Achsen-Signal mit der Listbox. Damit läßt
+sich z.B. eine Phasenebenendarstellung (2-dimensionaler
+Phasenraum d.h. Darstellung der Ableitung eines Signale über dem
+Signal selbst) dann leicht erzielen, wenn sowohl das Signal als
+auch seine Ableitung in der Schaltung zur Aufzeichung markiert wurden
+und als x-Achse das Signal gewählt wird.
+
+HINWEIS!
+Die Blockelement der "ANA1.x_Komplib." stellen bei linearen
+Übetragungselementen in der Regel ein internes Signal yp zur
+Verfügung, welches die zeitliche Ableitung des Ausgangssignal y ist.
+Auch der ANALaplace-Wizard erzeugt nach Möglichkeit ein solches
+Signal yp passend zu y.
+
+Genauigkeitssteuerung
+---------------------
+o  Ereignisgenaugigkeit
+   --------------------
+   Alle ANA-Lösungsverfahren sind in der Lage Time-Events und
+   State-Events mit einstellbarer Genauigkeit zu verarbeiten. Dazu
+   wird die Lösungskurve des Integrationsverfaren gestückelt.
+   Event-Zeitpunkte werden mit der Zeitunsicherheit ermittelt, die in
+   dem Feld "Ereignisgenaugigkeit" eingestellt werden kann. Die
+   Einheit der "Ereignisgenaugigkeit" sind Sekunden. Die minimale
+   zulässige Schrittweite (Feld "Min. Schrittweite (Grenze)") muß
+   kleiner als die geforderte Ereignisgenaugkeit sein, da der
+   Simulator sonst beim Ermitteln eines Event-Zeitpunkts von der
+   Schrittweitenüberwachung unterbrochen wird.
+
+o  Maximaler relativer lokaler Fehler und
+   minmimale relativ bewertete Amplitude
+   --------------------------------------
+   Bei allen Integrationsverfahren mit Schrittweitensteuerung (auch
+   DASSL) kann die gewünschte Genauigkeit des Simulationsergebnisses
+   direkt vorgegeben werden. Die aktuelle Schrittweite kann während
+   der Simulation in der Statuszeile von ANAoszi überwacht werden. Sie
+   wird dort mit dem Symbol h bezeichnet.
+   Mit dem Feld "Max. rel. lokaler Fehler" kann der maximale relative
+   Fehler eingestellt werden, den eine Lösungskurve bei der
+   Berechung ihres nächstfolgenden Gitterpunktes erleidet. Relativ
+   bedeutet, daß der absolute Amplitudenfehler durch die
+   Augenblicksamplitude dividiert wird.
+   Damit bei sehr kleinen Signalamplituden die Bewertung mit dem
+   obigen relativen Fehlermaß zu keiner Übertreibung bei der
+   Schrittweitenwahl führt, wird, wenn die Signalamplitude den im Feld
+   "Min. rel. bewert. Amplitude" einstellten Amplitudenwert
+   unterschreitet, der relative lokale Fehler durch Bezug auf diesen
+   Wert ermittelt. Obwohl die einzelnen gleichzeit auftretenden
+   Signalamplituden sehr unterschiedlich sein können, kann in dieser
+   Version nur ein Wert für alle Zustandsgrößen vorgegeben werden.
+
+   Da oben beschriebene Bewertungsvorgang pro Integrationsvariable
+   (Zustandsgröße) durchgeführt wird ist der eingestellten maximale
+   relative lokale Fehler der Maximalwerte der einzelnen Fehlers. D.h.
+   es wird die Maximumnorm des Fehlers bewertet.
+
+o  Anfangsschrittweite
+   -------------------
+   Bei Verfahren mit automatischer Schrittweitensteuerung kann in
+   diesem Feld die Anfangsschrittweite eingestellt werden. Beim
+   DASSL-Algorithmus wird diese ebenfalls automatisch ermittelt und
+   dieses Feld ist ohne Funktion.
+   Bei Verfahren mit fester Schrittweite entspricht der hier als
+   "Anfangsschrittweite" eingestellte Wert gleichzeitig der festen
+   Schrittweite mit der die gesamte Simlutation (mit Ausnahme der
+   Event-Behandlung) durchgeführt wird.
+
+o  Minimale Schritteweite (Grenze)
+   -------------------------------
+   In dem Feld "Min. Schrittweite (Grenze)" wird die kleinste
+   zulässige Schrittweite angegeben. Bei dem Unterschreiten dieses
+   Wertes bricht der Simulator ab. Wird diese unterschritten, so ist
+   entweder
+   o  das Lösungsverfahren zu schlecht - oder
+   o  das Differentialgleichungssystem zu steif - oder
+   o  es wurde eine Unsteigkeit nicht als Event implementiert - oder
+   o  die minimale Schrittweite größer als die Ereignisgenaugkeit -
+      oder
+   das Problem benötigt zur Lösung eben kleinere Schrittweiten.
+
+o  Maximale Schrittweite (Grenze)
+   ------------------------------
+   Vor allem hochwertige Integrationsverfahren vergrößern die
+   Schrittweite zwischen gen Gitterpunkten der Lösung sehr schnell.
+   Mit Hilfe des Feldes "Max. Schrittweite (Grenze)" wird die
+   Schrittweite auf diesen eingestellten Wert begrenzt. Dies geschieht
+   ohne Rückmeldung.
+
+Wahl eines Integrationsverfahrens
+---------------------------------
+ANA stellt folgende Lösungsverfahren zur Verfügung:
+
+O  Einschrittverfahren der Runge-Kutta Klasse
+   ==========================================
+   Sie können für die Lösung nicht-steifer (keine stark
+   unterschiedliche Eigenwerte) Differentialgleichungsysteme
+   eingesetzt werden. Steife Differentialgleichungssysteme (mit
+   stark unterschiedlichen Eigenwerten) können mit diesen Verfahren
+   nur unter hohem Zeitaufwand gelöst werden. In einem solchen Fall
+   sollte der DASSL Algorithmus versucht werden.
+
+   o  Runge-Kutta Dormand-Prince 5(4) mit variabler Schrittweite
+      ----------------------------------------------------------
+         Dies ist das Standardverfahren. Die Lösung wird durch
+         Anstückelung eines Polynoms fünfter Ordnung gebildet. Zur
+         Schrittweitenkontrolle wird mit der Lösung durch ein Polynom
+         vierter Ordnung verglichen.
+
+   o  Runge-Kutta Dormand-Prince 8(6) mit variabler Schrittweite
+      ----------------------------------------------------------
+         Dieses Verfahren bietet bei nichtsteifen (siehe oben)
+         Diffentialgleichungssystemen eine hohe Genauigkeit bei
+         geringer Schrittweite. Da aber der Rechenaufwand pro Schritt
+         steigt ist eine Zeitersparnis nur dann bemerkbar, wenn die
+         Zeitdistanz der Visualisierung im ANAoszi
+         (Kommunikationsintervall) nicht zu gering gewählt wurde und
+         die Schaltung nicht durch ständige Ereignisbehandlung
+         dominiert wird.
+
+   o  Runge-Kutta Fehlberg 2(3) mit variabler Schrittweite
+   o  Runge-Kutta Fehlberg 4(5) mit variabler Schrittweite
+   o  Runge-Kutta England 4(5) mit variabler Schrittweite
+   o  Runge-Kutta 4(5) mit variabler Schrittweite
+      ----------------------------------------------------
+         Sie sind für Vergleichszwecke vorhanden.
+
+   o  Euler Integration mit fixer Schrittweite (1. Ordnung)
+   o  Runge-Kutta 4 mit fixer Schrittweite
+      ------------------------------------
+         In diesem Fall ist der Wert im Feld "Anfangsschrittweite" der
+         unveränderbare Wert der Simulationsschrittweite. Eine
+         Ausnahme bilden zeitgesteuerte (Time-Events) und
+         zustandsgesteuerte Ereignisse (State-Events). Solche werden
+         immer durch systematische Kontrolle der Schrittweite mit der
+         eingestellten "Ereignisgenauigkeit" ermittelt.
+         nach dem Verfahren der Bisektion.
+         Die Genauigkeit der Lösungskurve kann nur indirekt durch
+         Variation der fixen Schrittweite beeinflußt werden.
+
+O  DASSL-Algorithmus
+   =================
+   Das behandelte Differentialgleichungssystem wird durch den
+   Einsatz dieses impliziten Lösungsverfahrens auch dann zeitlich
+   attraktiv gelöst, wenn die Schaltung stark unterschiedliche
+   Eigenwerte aufweist (d.h. das Differentialgleichungssystem steif
+   ist). Der DASSL-Algorithmus wurde für die korrekte Behandlung von
+   Time-Events und State-Events adaptiert. Die Verarbeitung von
+   impliziten Differentialgleichungen wird von ANAmdl in dieser
+   Version nicht unterstützt.
+   Bei nichtsteifen System sind die meisten Einschrittverfahren der
+   Runge-Kutta Klasse bei gleicher Genauigkeit schneller.
+
+IDH_HELP_SigNameDlg
+Ändern von Signalnamen
+======================
+
+Die Signalnamen der Schaltung können verändert werden. Dazu werden in
+der Spalte "Neuer Name" die gewünschten neuen Namen eingetragen.
+Bleiben in dieser Spalte Einträge leer, so behält das betroffene
+Signal seinen Namen.
+Mit dem Button "Abbrechen" kann ein Änderungsvorgang jederzeit
+verworfen werden.
+
+WICHTIG!
+Bevor der Button "OK" gedrückt wird, muß der Eingabemodus des zuletzt
+bearbeiteten Tabellenfeldes durch Drücken der Return-Taste
+abgeschlossen werden. Ansonsten wird die zuletzt getätigte Eingabe
+nicht mitverarbeitet. Eine abgeschlossene Eingabe erkennt man
+dadurch, daß die Eingabe in fetter Schrift dargestellt wird.
+
+Benennt man mehrere Signale mit gleichem neuen Namen, so wird man beim
+Verlassen des Dialoges gewarnt. In diesem Fall erhält nur das erste
+Signal den gewünschten Namen. Alle weiteren Signale werden mit einem
+veränderten Namen nach folgendem Schema benannt:
+
+   Masse                ...   gewünschter Namen
+   Masse_conflict       ...   1. Duplikat
+   Masse_comflict'      ...   2. Duplikat
+   Masse_conflict''     ...   3. Duplikat
+   ...
+
+IDH_HELP_LaplaceWizardDlg
+Direkte Eingabe von Übertragungsfunktionen
+==========================================
+
+Mit Hilfe dieses Dialogs können Übertragungsfunktionen als Blöcke
+mit einem Eingang und einem Ausgang erstellt werden. Dazu wird
+die gewünschte Übertragungsfunktion als Ausdruck angegeben.
+
+Wird innerhalb des Ausdrucks der Laplace-Operator s verwendet,
+so erhält man ein kontinuierliches Übertragungsystem.
+
+Wird stattdessen der Operator z (z = exp(s*T)) verwendet, so
+definiert man ein zeitdiskretes Übertragungssystem und muß
+für die so definierte Differenzengleichung noch die Abtastzeit T
+als Parameter festlegen. Der Ausgang solcher Systeme zeigt zwischen
+den Abtastzeitpunkten ständig den letzen Ausgabewert. Dies entspricht
+dem Verhalten eines Abtast-Halteglieds nullter Ordnung (Gh0).
+
+s-Operator und z-Operator dürfen in einem Ausdruck nicht gemischt
+vorkommen. Der Grad des Zählerpolynomns (höchste Potenz des
+Operators im Zähler) muß kleiner oder gleich dem Grad des Nenner-
+polynoms (höchste Potenz des Operators im Nenner = Ordnung des
+Systems) sein. Ansonsten ist das System entweder ideal differenzierend
+(bei Differentialgleichungen) oder nicht kausal (bei Differenzen-
+gleichungen).
+
+Für den Ausdruck stehen folgende Elemente zu Verfügung:
+-------------------------------------------------------
+
+   s Laplace-Operator (Heavyside-Operator) -> Differentialgleichung
+   z Operator der Form z = exp(s*T)        -> Differenzengleichung
+   j Imaginäre Einheit
+   T Abtastzeit                            -> Differenzengleichung
+     Dieser Parameter ist nur bei Definition von G(z) vorbelegt.
+   Alle anderen Namen, die mit einem Buchstaben beginnen werden
+     als Parameter interpretiert und können später über den
+     Parameterdialog verändert werden.
+
+   + Addition von Ausdrücken
+   - Subtraktion von Ausdrücken
+   * Produkt zweier Ausdrücke
+   / Quotient zweier Ausdrücke
+   ^ Potenzieren eines Ausdrücks mit einem ganzzahligen Exponenten
+   - Führendes Minus
+   (
+   ) Klammern
+
+--------------------------------------------------------------------
+Beispiele:
+--------------------------------------------------------------------
+                    1 + s*Tv
+Gegeben:  G(s) = k* --------     (PDT1)
+                    1 + s*Td
+
+Eingabe:  k*(1+s*Tv)/(1+s*Td)
+--------------------------------------------------------------------
+                     kn           s
+Gegeben: G(s) = kr + --- + kd * --------     (PIDT1)
+                     s          1 + s*Td
+
+Eingabe: kr + kn/s + kd*s/(1+s*Td)
+--------------------------------------------------------------------
+                 3 * (s+2)^2 * (s+4)
+Gegeben: G(s) = ---------------------     (PDD2T3)
+                2*s^3 + gamma*s^2 + 1
+
+Eingabe: 3*(s+2)^2*(s+4)/(2*s^3+gamma*s^2+1)
+--------------------------------------------------------------------
+                    1
+                  ----- + z^2 + 2
+                  (z-1)
+Gegeben: G(z) = -------------------
+                z*(2*z^2 - (z+2)^2)
+
+Eingabe: (1/(z-1) + z^2 + 2)/(z*(2*z^2 - (z+2)^2))
+--------------------------------------------------------------------
+                (z-1)*(z+0.5+0.5*j)*(z+0.5-0.5*j)
+Gegeben: G(z) = ---------------------------------
+                           (z-1)^3
+
+Eingabe: (z-1)*(z+0.5+0.5*j)*(z+0.5-0.5*j)/(z-1)^3
+--------------------------------------------------------------------
+
+Gegeben: G(z) = k
+
+
+Eingabe: k*z/z
+Hinweis: Durch den Einsatz des z-Operators (der so wirkungslos ist)
+         wird ein zeitdiskretes System erzeugt.
+--------------------------------------------------------------------
+IDH_HELP_FrameBlockLayoutDlg
+Gestalten von Rahmen
+====================
+
+Ein Rahmen ist ein Rechteck mit einer Umrandung und einer Füllung.
+Sowohl die Füllung als auch die Umrandung ist getrennt aktivierbar
+und kann in jeweils einer eigenen Farbe gezeichnet werden.
+
+Mit dem Button "Weitere Gestaltung" bekommt man den Dialog zum
+Ändern der optischen Gestalt eines Blocks. Damit sind auch Bilder
+(ANAicl, Bitmaps) und Text als Rahmeninhalt möglich.
+
+Rahmen werden so gezeichnet, daß sie unter den Blöcken zu liegen
+kommen (Hintergrund). Bei sich überlappenden Rahmen ist keine
+Veränderung der Schichtung (Kontrolle Vordergrund - Hintergrund)
+der Rahmen möglich.
+
+IDH_HELP_SelectBlockDlg
+Einfügen eines Blocks und Wartung der Blockbibliotheken
+=======================================================
+
+ANA bietet Blöcke aus verschiedenen Blockbibliotheken an. Jede
+Bibliothek ist in Gruppen unterteilt um gleichartige Blöcke
+zusammenzufassen.
+
+Durch Anklicken von Elementen der Listen "Bibliothek:" und "Gruppe:"
+kann man die Bibliotheken durchsehen. Durch Doppelklicken auf einen
+Eintrag in der Liste "Block:" fügt man diesen Block in die Schaltung
+ein. Mit dem Button "OK" wählt man ebenfalls den gerade markierten
+Block aus.
+
+Mit den Buttons "Bearbeite BFL ..." oder "Bearbeite Block ..."
+startet man einen eingebauten Editor um die Gruppendatei einer
+Bibliothek oder ein Blockscript zu lesen oder zu bearbeiten.
+
+Bibliotheken
+------------
+Bibliotheken werden aufgrund eines Eintrags in der Datei ANA.INI
+bereitgestellt. Der folgende Auschnitt aus einer ANA.INI Datei
+...
+BLOCKLIBS
+   LIB ANA1.x_KompLib. AT C:\ANA2\ana1x
+   LIB Misc_1 AT C:\ANA2\misc1
+   LIB Local AT c:\ANA2\temp\local
+ENDBLOCKLIBS
+
+zeigt außer der speziellen Bibliothek "Local" die
+Standardbibliotheken "ANA1.x_Komplib" und "Misc1". In "Local" dürfen
+keine selbsterstellten Blöcke abgelegt werden, da diese Wizardblöcke
+enthält und sie daher beim Laden und Speichern eines Beispiels
+automatisch gefüllt und geleert wird.
+
+Eine Bibliothek in eine Ansammlung von ASCII Dateien in einem
+Verzeichnis. Ein eindeutiger Name für die Auswahlliste und die Angabe
+eines Pfades in ANA.INI genügen zur Installation. Die Konfigurations-
+datei ANA.INI wird nur beim Starten von ANA ausgewertet.
+
+Gruppen
+-------
+Jede Bibliothek verfügt über ein Inhaltsverzeichnis, das in der Datei
+"ABLOCKS.BFL" als ASCII Datei abgelegt ist. Der Aufbau einer solchen
+Datei zeigt die mit $[Gruppenname] abgeteilten Abschnitte
+...
+$[Testsignale]
+ASPRUNG,Sprungfunktion
+ARAMPE,Rampenfunktion
+
+$[Lineare Systeme]
+AADD2,Addierer mit 2 Eingaengen
+AADD3,Addierer mit 3 Eingaengen
+...
+Jeder Verweis auf einen Block beginnt mit dem Dateinamen und ist von
+einem Erläuterungstext gefolgt. Dieser Text erscheint in der Liste
+"Block".
+
+Mit dem Button "Bearbeite BFL ..." wird ein eingebauter Editor zum
+Lesen oder Verändern einer BFL-Datei gestartet. Nach dem Verlassen
+dieses Editors wird die Datei neu eingelesen und Änderungen somit
+sofort auch ohne Neustart von ANA wirksam.
+
+Blöcke
+------
+Jedem Block ist ein Blockscript in der Sprache ANAmdl (ANA Module
+Description Language) zugeordnet. Dieses Blockscript besteht aus
+Teilen, die für die Anschlüsse und Parameter des Blocks zuständig
+sind und aus weiteren Teilen welche die Modelleigenschaften
+definieren.
+
+Ändert man nur die Modelleigenschaften eines Blocks, so werden diese
+Änderungen sofort bei der nächsten Simulation eines Beispiels
+wirksam.
+
+ACHTUNG!
+Alle Blöcke der Bibliotheken (außer die in "Local") werden von den
+Beispielen nur referenziert d.h. wird ein solcher Block geändert,
+wirkt sich dies auf alle Beispiele aus, die diesen Block verwenden.
+Ändert man Teile, die Anschlüsse oder Parameter des Blocks
+beschreiben, so muß der betroffene Block oder die Schaltung neu
+geladen werden, damit die Änderungen vom Schaltungseditor erkannt
+werden.
+
+Mit dem Button "Bearbeite Block ..." wird ein eingebauter Editor zum
+Lesen oder Verändern des Blockscripts gestartet.
+
+Einfügen selbstgeschriebener Blöcke
+-----------------------------------
+
+Es empfiehlt sich eine eigene, persönliche Bibliothek anzulegen. Dazu
+erweitert man den Abschnitt "BLOCKLIBS" in ANA.INI bespielsweise um
+...
+   LIB Misc_1 AT C:\ANA2\misc1
+   LIB Privat AT C:\ANA2\privat
+   LIB Local AT c:\ANA2\temp\local
+...
+Die Bibliothek "Privat" wird durch das Anlegen des Verzeichnis
+"C:\ANA2\privat" geschaffen. Dies hat mit Hilfe externer Programme zu
+erfolgen. Ein Neustart von ANA ist durchzuführen.
+
+Um einen Block in eine bestehende Bibliothek einzufügen wird
+"ABLOCKS.BFL" mit Hilfe des Buttons "Bearbeite BFL ..." bearbeitet.
+Der folgende Eintrag definiert eine Gruppe "Dampfkessel" und einen
+Block mit dem Dateinamen "TYP221" samt der Beschriftung "225 Liter
+Kessel Bauart 221". ...
+$[Dampfkessel]
+TYP221,225 Liter Kessel Bauart 221
+...
+Mit dem Button "Bearbeite Block ..." kann die Datei "TYP221"
+bearbeitet werden. Beispieltexte können mit Hilfe des Clipboards
+vorteilhaft transferiert werden.
+
+IDH_HELP_AnaOsziOptionsDlg
+Anzeige von Signalen - Skalierung - Beschriftung - Druck
+========================================================
+
+Mit diesem Dialog kontrolliert man wichtige Eigenschaften des ANAoszi
+Bildes:
+   o Auswahl von Signalen für die Anzeige
+   o Anzeigefarbe von Signalen
+   o Skalierung der Achsen
+   o Beschriftung des Diagramms
+   o Größe des Diagramms beim Ausdruck (nur hier änderbar!)
+
+Auswahl und Farbe der Signale
+-----------------------------
+Die aufgezeichneten Signale sind in der Liste "Signal:" wählbar. Für
+den markierten Listeneintrag zeigt die Checkbox "anzeigen" ob dieses
+Signal in Diagramm erscheint. Standardmäßig erscheinen alle
+aufgezeichneten Signale.
+
+Im Feld "Farbe" erscheint die zugeordnete Signalfarbe. Drückt man den
+Button "?" erscheint ein Farbauswahldialog. Man kann dem Signal eine
+andere Farbe zuordnen. Diese Einstellungen werden beim Speichern
+eines Beispiels nicht gesichert.
+
+
+Skalierung von Achsen
+---------------------
+Das ANAoszi teilt X- und Y-Achse immer in 10 Skalenteile. Ein
+Skalenteil hat beim Standardausdruck entweder 1 cm oder bei 50%
+Vergrößerung 1,5 cm Länge. Mit den beiden Checkboxen wird, getrennt
+für X- und Y-Achse, zwischen automatischer Skalierung und manueller
+Skalierung umgeschaltet.
+
+Bei automatischer Skalierung werden alle aufgezeichneten Signale zur
+Berechnung des Maßstabs miteinbezogen. Die Checkbox "anzeigen" hat
+hier keine Auswirkung. Das Eingabefeld für einen Skalenmaßstab wird
+erst bei deaktivierter automatischer Skalierung aktiv. Eine
+Verkleinerung der Skalierungszahl (gemessen in Einheit/Skalenteil
+d.h. Einheit/cm bei Standarddruck) bewirkt eine Vergrößerung des
+Bildes.
+
+Ist ein Bild größer als die durch die Maßstäbe eingestellte
+Anzeigefläche, so erscheinen Rollbalken mit deren Hilfe ein
+Bildausschnitt gewählt werden kann.
+
+Die Letzteinstellungen der Skalierung werden beim Sichern eines
+Beispiels aufgezeichnet.
+
+TIPS!
+Vergößern und Wählen eines Ausschnitts kann rasch und direkt mit der
+Maus durchgeführt werden. Dazu markiert man mit der Maus einen
+rechteckförmigen Bildausschnitt: Die linke Maustaste wird beim ersten
+gewünschten Eckpunkt des Ausschnittfensters gedrückt und beim
+diagonal gegenüberliegenden Eckpunkt losgelassen. Der Maßstab wird
+automatisch berechnet und kann in diesem Dialog bearbeitet werden. Es
+gibt keine direkte Möglichkeit zum vorherigen Bild zurückzukehren.
+
+Beschriftung eines Diagramms
+----------------------------
+Ein Diagramm besitzt einen Informationstext in der oberen Statuszeile
+des ANAoszis. Der Text ist standardmäßig der Dateiname der
+simulierten Schaltung und soll bei gleichzeitiger Anzeige mehrerer
+ANAoszis die Möglichkeit einer primitiven Dokumentation der
+Experimente ermöglichen. Deshalb kann dieser Text mit Hilfe dieses
+Dialogs verändert werden. Wählt man zusätzlich mit Hilfe der Checkbox
+die Option "Text verriegeln" so bleibt dieser Text auch nach einer
+Neusimulation bestehen.
+
+Ändern der Größe des Audrucks
+-----------------------------
+Der Skalenmaßstab für den Ausdruck des ANAoszis kann von 1 cm pro
+Skalenteil auf 1,5 cm pro Skalenteil vergrößert werden. Alle
+Ausdrucke des Diagramms werden mit Hilfe des Druckertreibers exakt
+auf diesen Maßstab berechnet. Die Checkbox "Beim Drucken Bild um 50%
+vergrößern" ist standardmäßig angekreuzt.
+
+IDH_HELP_FontSelDlg
+Schriftart und Schriftgröße der Beschriftung
+============================================
+
+Es kann eine Schriftart gewählt werden. Die Schriftgröße wird in der
+Einheit 0.1 mm eingestellt. Diese Einstellungen werden für beide
+Skalen und für die Signallegende verwendet. Sie werden nicht
+gespeichert.
+
+IDH_HELP_IdentWindow
+Identifikationsfenster
+======================
+
+In diesem Fenster wird der Augenblickswert der identifizierten
+Übertragungsfunktion angezeigt. Dabei kann entweder die diskrete
+Übertragungsfunktion G(z) oder eine umgerechnete, kontinuierliche
+Übertragungsfunktion G(s) dargestellt werden. Die Auswahl geschieht
+durch die Buttons "G(z)", "Gh0 G(s)" und "Ghp G(s)", die gegenseitig
+auslösen. Die Anzeige der Dezimalstellen kann zwischen 4 und
+maximaler Präzision mit dem Button "4 Short" / "3562 Long" umgestellt
+werden.
+
+Nach dem Ende der Simulation bliebt das Fenster bestehen. Wird dieses
+nicht durch den Button "Schneemann" eingefroren, so wird es mit dem
+Start der nächsten Simulation gelöscht. Der Button "Kreuz" dient zum
+schnellen Löschen des Fensters.
+
+Die angezeigte Übertragungsfunktion kann mit den Button "Clipboard"
+in das Windows-Clipboard übernommen werden. Dabei wird immer die
+volle Genauigkeit verwendet. Eine eingestellte Totzeit wird NICHT
+übernommen. So kann diese Darstellung im Eingabefenster des
+ANAlaplace Wizards mit ^V eingefügt werden und damit das
+identifizierte System (ohne einer allfälligen Totzeit) als Block
+implementiert werden.
+
+Durch den Button "ANAlin" wird die Übertragungsfunktion dem Produkt
+ANAlin (ANA Linear Workbench) übergeben.
+
+Anzeige von Gh0 G(s)
+--------------------
+Die diskrete Übertragungsfunktion G(z) wird in G(s) umgerechnet. Dazu
+wird das Anregungssignal zwischen den Abtastzeitpunkten als konstant
+angenommen (Halteglied 0ter Ordnung = Sample & Hold). Ändert sich das
+Anregungssignal nur zu den Abtastzeitpunkten ist diese Umrechung
+optimal.
+
+Anzeige von Ghp G(s)
+--------------------
+Die diskrete Übertragungsfunktion G(z) wird in G(s) umgerechnet. Dazu
+wird das Anregungssignal zwischen den Abtastzeitpunkten durch
+Geradenstücke interpoliert angenommen (Polygon-Halteglied). Damit
+kann bei kontinuierlichem Anregungssignal ein sehr gutes Resultat
+erzielt werden.
+
+IDH_HELP_

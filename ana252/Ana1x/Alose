@@ -1,0 +1,54 @@
+#   Lose                         Parameter:           (c) IERT  12.10.1995
+#   (z.B. Getriebespiel)         A  .. Breite der Lose [1]
+#                                AB .. Anfangswert des Ausgangs [1]
+#           y ^
+#             |      .   .      --------+        Beispiel:
+#             |    .   .       <-->     |        Kupplungsspiel
+#             |  .   .          u    |  |  |     A .. Breite der Pfanne
+#             |.   .                 +-----+----
+#            .|  .                          <-->
+#  ---------+-+-+----------> u               y
+#        -A/2 | A/2
+#       .   . |                  Hinweis:
+#     .   .   |                  Die Simulation einer Lose erfordert das
+#   .   .     |                  Aufsuchen lokaler Maxima von u(t).
+#             |                  Dieses Problem wird von ANA2 durch
+#                                Beobachtung der Loesungsstuetzpunkte
+#                                der Differentialgleichung naeherungsweise
+#                                geloest.
+#
+BLOCK ALose;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Lose"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Lose Eingang";
+OUTPUT
+   y "[1] Lose Ausgang";
+PARAMETER
+   A  = 0.1 "[1] Breite der Lose";
+   AB = 0.0 "[1] Ausgangswert";
+VAR
+   yy DISCRETE "Loseausgang";
+   ah DISCRETE "Halbe Losebreite";
+SIM
+   y = yy <- SCHEDULE lose(u, ah);
+ENDSIM
+
+PROCEDURE lose;
+   IF u > yy + ah THEN
+      yy = u - ah;
+   ENDIF
+   IF u < yy - ah THEN
+      yy = u + ah;
+   ENDIF
+ENDPROCEDURE
+
+INIT
+   ah = A/2;
+   yy = AB;
+ENDINIT
+ENDBLOCK ALose;

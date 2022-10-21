@@ -1,0 +1,92 @@
+#  Zweipunktregler               Parameter:           (c) IERT  13.10.1995
+#  mit/ohne Hysterese            k  .. Stellgroesse  [1]
+#                                s1 .. Ausschaltschwelle [1]
+#             y ^                s2 .. Einschaltschwelle [1]
+#               |                AB .. Anfangsbedingung des Relais [1]
+#            +-----+----- k      Tr .. Blockierzeit des Reglers [s]
+#            |  |  |
+#            v  |  ^             Hinweis:
+#   ---------|--+--|--------->   Die Anfangslage des Ausgangs y ist fuer
+#            |  |  |        u    s2 < u < s1 unbestimmt und kann durch
+#            |  |  |             k * sign(AB) vorgegeben werden.
+#    -k -----+-----+             Mit Hilfe der Blockierzeit Tr wird die
+#           s1  |  s2            Schaltfrequenz auf einem endlichen Wert
+#               |                begrenzt.
+#
+BLOCK AZPunkt;
+$ BLOCKDIM -1 -1 6 7
+$ TEXT "2-Pkt.-Reg."
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Zweipunktregler Eingang";
+OUTPUT
+   y "[1] Zweipunktregler Ausgang";
+PARAMETER
+   k = 1.0 "[1] Stellgroesse";
+   s1 = -0.1 "[1] Ausschaltschwelle";
+   s2 = 0.1 "[1] Einschaltschwelle";
+   AB = 1 "[1] Anfangsbedingung";
+   Tr = 1e-3 "[s] Blockierzeit des Reglers";
+VAR
+   a         DISCRETE "Reglerausgang";
+   rstate    DISCRETE "Zweiwertiges Stellrelais";
+   waitstate DISCRETE "Wartezustand";
+SIM
+   SWITCH waitstate
+   CASE 0:
+      SWITCH rstate
+      CASE 0:
+         ONRISE u < s1 DO set_to_neg;
+      CASE 1:
+         ONRISE u > s2 DO set_to_pos;
+      DEFAULT:
+         EXIT "Unbekannter Zustand fuer rstate";
+      ENDSWITCH
+   CASE 1:
+      // Nothing
+   DEFAULT:
+      EXIT "Unbekannter Zustand fuer waitstate";
+   ENDSWITCH
+   y = a <- set_to_pos(u) <- set_to_neg(u);
+ENDSIM
+
+PROCEDURE set_to_pos;
+   a = k;
+   rstate = 0;
+   waitstate = 1;
+   SCHEDULE wake2punkt AT NOW+Tr;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE set_to_neg;
+   a = -k;
+   rstate = 1;
+   waitstate = 1;
+   SCHEDULE wake2punkt AT NOW+Tr;
+   STORE ALL;
+ENDPROCEDURE
+
+PROCEDURE wake2punkt;
+   waitstate = 0;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   IF s2 < s1 THEN
+      EXIT "s2 darf nicht kleiner als s1 sein!";
+   ENDIF
+   waitstate = 0;
+   rstate = 0;
+   IF AB >= 0 THEN
+      a = k;
+      rstate = 0;
+   ENDIF
+   IF AB < 0 THEN
+      a = -k;
+      rstate = 1;
+   ENDIF
+ENDINIT
+ENDBLOCK AZPunkt;

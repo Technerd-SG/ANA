@@ -1,0 +1,44 @@
+#       Integrator               Parameter:           (c) IERT  27.09.1995
+#                                Ti .. Integrationszeitkonstante [s]
+#                                AB .. Anfangsbedingung y(0) [1]
+#                                     t
+#         y(s)    1                  /  u
+#  G(s) = ---- = ----            y = | --- dT + AB
+#         u(s)   s Ti                /  Ti
+#                                    0
+#  y(0) kann vorgegeben werden
+#                                Hinweis:
+#                                Um einen Integrator zu stoppen, kann
+#                                entweder das Signal u manipuliert oder ein
+#                                neuer Block geschrieben werden.
+#                                Als Ableitung des Ausgangsignals y ist
+#                                das interne Signal yp markierbar.
+#
+BLOCK AInteg;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Integrator"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 0 1
+INPUT
+   u "[1] Integrator Eingang";
+OUTPUT
+   y "[1] Integrator Ausgang";
+PARAMETER
+   Ti = 1.0 "[1] Integrationskonstante";
+   AB = 0.0 "[1] Anfangsbedingung";
+STATE
+   x "[1] Integrator";
+VAR
+   yp;   // Ableitung des Ausgangssignals
+SIM
+   yp = u / Ti;
+   x .= yp;
+   y = x;
+ENDSIM
+
+INIT
+   x = AB;
+ENDINIT
+ENDBLOCK AInteg;

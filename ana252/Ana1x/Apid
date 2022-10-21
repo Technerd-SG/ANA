@@ -1,0 +1,60 @@
+#  PID-Regler (exakt PIDT1)      Parameter:           (c) IERT  07.10.1995
+#                                k  .. Verstaerkung [1]
+#  Sonderfall Tv = 0             kn .. 1/Tn (1 /Nachstellzeit) [1/s]
+#  (PI-Regler):                  Tv .. Vorhaltezeit [s]
+#                  t             N  .. Tv/T1 fuer realen D-Anteil [1]
+#                 /
+#  y(t) = k u + k | kn u dT             y(s)      /     kn     s Tv    \
+#                 /              G(s) = ---- = k | 1 + ---- + --------  |
+#                 0                     u(s)      \     s     1 + s T1 /
+#
+#  Mit N kann durch das          Hinweis:
+#  Verhaeltnis Tv/T1 die         Der P-Anteil laesst sich in dieser Darstellung
+#  Amplitude des DT1-Anteiles    nicht abschalten, der I und D-Anteil dagegen
+#  eingestellt werden.           schon.
+#                                ANA 1.x berechnet den D-Anteil als
+#                                Rueckwaertsdifferenz. ANA 2.x ersetzt dieses
+#                                Verhalten per ANA 1.x Konverter durch ein
+#                                kontinuierliches DT1.
+#
+BLOCK APID;
+$ BLOCKDIM -1 -1 6 7
+$ TEXT "PIDT1-Regler"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] PID Eingang";
+OUTPUT
+   y "[1] PID Ausgang";
+PARAMETER
+   k  = 1.0 "[1] Verstaerkung";
+   kn = 1.0 "[1/s] 1/Tn";
+   Tv = 0.0 "[s] Vorhaltezeit";
+// Problem P-Anteil laesst sich in dieser Form nicht abschalten
+   N = 10.0 "[1] Tv/T1";
+VAR
+   b1 DISCRETE;
+   a1 DISCRETE;
+STATE
+   I  "[1] Integralanteil";
+   D  "[1] Verzoegerung";
+SIM
+   I .= kn*u;
+   D .= a1*D + u;
+   y = k*((1 + N)*u + I - b1*D);
+ENDSIM
+
+INIT
+   IF Tv == 0 THEN
+      b1 = 0;
+      a1 = 0;
+      N = 0;
+   ENDIF
+   IF Tv != 0 THEN
+      b1 = SQR(N)/Tv;
+      a1 = -N/Tv;
+   ENDIF
+ENDINIT
+ENDBLOCK APID;

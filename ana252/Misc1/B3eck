@@ -1,0 +1,64 @@
+#   Anregung - Dreieckfunktion   Parameter:           (c) IERT  27.03.1997
+#  y ^                           a1 .. Amplitudenminimum [1]
+#    |         T2.               a2 .. Amplitudenmaximum [1]
+#  a2|       /\  .    / \        T1 .. Anstiegzeit [s]
+#    |      /.  \   /    \       T2 .. Abfallzeit [s]
+#  a1|    /  .   \/        \
+#    |    T1
+#   -+-  -------------------->
+#    0    <-T1+T2>         t
+#                                Hinweis: Es wird immer mit dem Ansteigen
+#                                aus das Amplitudenmaximum gestartet.
+#                                Die Periodendauer betraegt T1+T2.
+#                                Der rechtsseitige Grenzwert
+#                                der Amplitude wird aufgezeichnet.
+#
+BLOCK B3ECK;
+$ BLOCKDIM -1 -1 5 7
+$ TEXT "Dreieck"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+OUTPUT
+   y "[1] Dreieckfunktion Ausgang";
+PARAMETER
+   a1 = 0.0 "[1] Amplitudenminimum";
+   a2 = 1.0 "[1] Amplitudenmaximum";
+   T1 = 0.5 "[s] Anstiegszeit";
+   T2 = 0.5 "[s] Abfallzeit";
+VAR
+   time DISCRETE "letzte Umschaltzeit";
+   state DISCRETE "Anstieg/Abfall";
+SIM
+   SWITCH state
+   CASE 0:
+      y = (a2-a1)/T1*(NOW-time) + a1;
+   CASE 1:
+      y = (a1-a2)/T2*(NOW-time) + a2;
+   ENDSWITCH
+ENDSIM
+
+PROCEDURE slowdown;
+   state = 1;
+   time = NOW;
+   SCHEDULE rise AT NOW+T2;
+   STORE;
+ENDPROCEDURE
+
+PROCEDURE rise;
+   state = 0;
+   time = NOW;
+   SCHEDULE slowdown AT NOW+T1;
+   STORE;
+ENDPROCEDURE
+
+INIT
+   IF T1 <= 0 AND T2 <= 0 THEN
+      EXIT "T1, T2 muessen > 0 sein!";
+   ENDIF
+   state = 0;
+   time = 0;
+   SCHEDULE slowdown AT T1;
+ENDINIT
+ENDBLOCK B3ECK;

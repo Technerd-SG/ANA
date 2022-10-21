@@ -1,0 +1,74 @@
+#  Kennflaechenelement           Parameter:           (c) IERT  14.10.1997
+#                                fname ... Dateiname der Kennlinie
+#
+#  Die Kennflaeche wird durch Angabe einer Stuetzpunktmatrix definiert.
+#  Der Stuetzpunktabstand der Eingangsvariablen-X und Y ist jeweils
+#  aequidistant d.h. es werden nur Z-Werte angegeben. Daten zwischen
+#  den Stuetzpunkten werden linear interpoliert. Die Eingangsvariable-X
+#  wird durch Angabe von MinX und MaxX, linear skaliert. Die Eingangsvariable-Y
+#  ebenso.
+#  Alle Daten sind in einer ASCII-Datei bereitzustellen. Deren Name
+#  ist Parameter des Blocks.
+#
+#  Beispiele fuer gueltige Dateinamen:
+#     "c:\ana214\beispiel\kenn1.txt" ...  absoluter Pfad
+#     "kenn1.txt"    ... Pfad relativ zum ANA.INI-Verzeichnis
+#     "@:\kenn1.txt" ... "@:\" bedeutet "das Verzeichnis in dem das aktuelle
+#                        Beispiel liegt".
+#                        Vorteil: Bei Weitergabe von ANA-Beispielen. Die
+#                                 Kennflaechendatei liegt immer im selben
+#                                 Verzeichnis wie die Beispieldatei.
+#  Anordnung der Daten:
+#           MinX  MaxX
+#     MinY  +----------> X-Richtung
+#           |
+#           |
+#     MaxY  v Y-Richtung
+#  Datenformat in der Datei:
+#     MinX MaxX XSpaltenAnzahl
+#     MinY MaxY YZeilenAnzahl
+#     ZWerte ...
+#
+#  Zuerst ist pro Achse jeweils durch drei Zahlen die Skalierung der
+#  Eingangsgroesse sowie die Anzahl der Stuetzpunkte als Ganzzahl festzulegen.
+#  Danach folgen die Z-Werte zeilendicht. Leerzeichen und Zeilenumbrueche
+#  spielen keine Rolle.
+#
+#  Beispiel fuer eine lineare Kennflaeche mit 4 x 3 Stuetzpunkten
+#  und X = [0. 3.], Y = [0. 2.]:
+#
+#  0. 3. 4
+#  0. 2. 3
+#  0. 1. 2. 3.
+#  1. 2. 3. 4.
+#  2. 3. 4. 5.
+#
+BLOCK BTable2;
+$ BLOCKDIM -1 -1 10 5
+$ TEXT "Kennflaeche"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] X-Eingang (Spalte)";
+   u2 "[1] Y-Eingang (Zeile)";
+OUTPUT
+   y "[1] Z-Ausgang";
+PARAMETER
+   fname STRING = "@:\flaeche.txt" "Kennflaeche";
+VAR
+   tabhandle DISCRETE;
+SIM
+   y = TABLEGET(tabhandle, u2, u1);
+ENDSIM
+
+PROCEDURE tabclose;
+   TABLECLOSE(tabhandle);
+ENDPROCEDURE
+
+INIT
+   tabhandle = TABLEOPEN(fname);
+   SCHEDULE tabclose AT EXIT;
+ENDINIT
+ENDBLOCK BTable2;

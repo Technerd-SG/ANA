@@ -1,0 +1,46 @@
+#      Linearisierte             Parameter:           (c) IERT  31.03.1997
+#   Gleichstrommaschine          Ra .. Ankerwiderstand [Ohm]
+#                                La .. Ankerinduktivitaet [H]
+#  Eingepraegt wird              Re .. Erregerwiderstand [Ohm]
+#     Ankerspannung [V]          Le .. Erregerinduktivitaet [H]
+#     Erregerspannung [V]        k1 .. aus: E=k1*Ie*n [V/As]
+#     Lastmoment [Nm]            k2 .. aus: Mm=k2*Ia*Ie [Nm/A^2]
+#                                J  .. Traegheitsmoment [kgm2]
+#  Ermittelt wird
+#     Drehzahl [U/min]
+#     Ankerstrom [A]
+#
+BLOCK BGSM;
+$ BLOCKDIM 17 8 6 9
+$ TEXT "Lin.GSM"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 8
+$ ICONALIG 1 1 1
+INPUT
+   Ua "[V] Ankerspannung";
+   Ue "[V] Erregerspannung";
+   Ml "[Nm] Lastmoment";
+OUTPUT
+   n "[U/min] Drehzahl";
+   Ia "[A] Ankerstrom";
+PARAMETER
+   Ra = 0.1 " [Ohm] Ankerwiderstand";
+   La = 0.005 "[H] Ankerinduktivitaet";
+   Re = 10 "[Ohm] Erregerwiderstand";
+   Le = 0.1 "[H] Erregerinduktivitaet";
+   k1 = 1 "[V/As] aus: E=k1*Ie*n";
+   k2 = 1 "[Nm/A^2] aus: Mm=k2*Ia*Ie";
+   J = 1.4 "[kgm2] Traegheitsmoment";
+STATE
+   s_ia "Ankerstrom";
+   s_ie "Erregerstrom";
+   s_n "Drehzahl";
+SIM
+   s_ie .= (Ue - s_ie*Re)/Le;               // Erregerkreis
+   s_ia .= (Ua - k1*s_ie*s_n - s_ia*Ra)/La; // Ankerkreis
+   s_n .= (k2*s_ia*s_ie - Ml)/J;            // Mechanisches System
+   n = s_n*60;
+   Ia = s_ia;
+ENDSIM
+ENDBLOCK BGSM

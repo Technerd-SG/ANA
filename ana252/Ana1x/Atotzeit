@@ -1,0 +1,44 @@
+#        Totzeit                 Parameter:           (c) IERT   9.09.1997
+#                                Tt .. Totzeit (Verzoegerung) [s]
+#         y(s)      -s Tt        AB .. Anfangsbedingung [1]
+#  G(s) = ---- = exp
+#         u(s)                   y(t) = u(t - Tt)
+#
+#  Hinweis und WARNUNG:
+#  Der Totzeitspeicher ist zu Beginn der Simulation mit Werten der
+#  Anfangsbedingung AB angefuellt.
+#  Es werden keine links- und rechtsseitigen Grenzwerte gespeichert.
+#  Die Wertefolge im Totzeitspeicher wird mittels einem Abtast-Halteglied
+#  0-ter Ordnung (Gh0) zwischen den Stuetzpunkten interpoliert (Treppenkurve).
+#
+#  Daher koennen durch die Verwendung von Totzeiten Stabilitaetsprobleme
+#  in der Simulation auftreten, da die Stetigkeitsbedingung fuer das
+#  Totzeitausgangssignal nicht erfuellt ist und auch keine Unstetigkeits-
+#  signalisierung erfolgt. Als Ausweg aus solchen Problemen wird die
+#  Verwendung eines Integrationsverfahrens mit fester Schrittweite
+#  angeraten.
+#
+BLOCK ATotzeit;
+$ BLOCKDIM -1 -1 6 3
+$ TEXT "Totzeit"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 4
+$ ICONALIG 1 1 1
+INPUT
+   u "[1] Totzeit Eingang";
+OUTPUT
+   y "[1] Totzeit Ausgang";
+PARAMETER
+   Tt = 1.0 "[s] Totzeit";
+   AB = 0.0 "[1] Anfangswert";
+DELAY
+   d = Tt "[1] Totzeit";   // maximale Totzeit
+SIM
+   d = u;
+   y = d[NOW-Tt];
+ENDSIM
+INIT
+   DELAYINIT(d, AB);
+ENDINIT
+ENDBLOCK ATotzeit;

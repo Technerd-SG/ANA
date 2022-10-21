@@ -1,0 +1,37 @@
+#        Analogrechner           Parameter:           (c) IERT  27.03.1997
+#     Aktiver Verstaerker        k1 .. Verstaerkung [1]
+#     mit vier Eingaenge         k2 .. Verstaerkung [1]
+#                                k3 .. Verstaerkung [1]
+#  u1 ___|\                      k4 .. Verstaerkung [1]
+#  u2 ___|  \
+#        |    \___ y             ACHTUNG: Dieses Element invertiert!
+#  u3 ___|    /
+#  u4 ___|  /                    y = -(k1*u1 + k2*u2 + k3*u3 + k4*u4)
+#        |/
+#                                Hinweis:
+#                                Ein ueblicher Analogrechner erlaubt fuer
+#                                k1, k2, k3, k4 nur die Werte 1 oder 10.
+#
+BLOCK BINV4;
+$ BLOCKDIM -1 -1 4 7
+$ TEXT "Inverter"
+$ TEXTALIG 1 1 1 1
+$ ICONNAME "*** NO PIC ***"
+$ ICONDIM 4 2
+$ ICONALIG 1 1 1
+INPUT
+   u1 "[1] Eingang";
+   u2 "[1] Eingang";
+   u3 "[1] Eingang";
+   u4 "[1] Eingang";
+OUTPUT
+   y "[1] Ausgang";
+PARAMETER
+   k1 = 1 "[1] Verstaerkung u1";
+   k2 = 1 "[1] Verstaerkung u2";
+   k3 = 1 "[1] Verstaerkung u3";
+   k4 = 1 "[1] Verstaerkung u4";
+SIM
+   y = -k1*u1 -k2*u2 -k3*u3 -k4*u4;
+ENDSIM
+ENDBLOCK BINV4;
